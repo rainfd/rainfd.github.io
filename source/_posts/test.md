@@ -6,6 +6,8 @@ tags:
 
 {% asset_img backgroud.jpeg backgroud %}
 
+<!--more-->
+
 ![backgroud](backgroud.jpeg)
 
 ---
