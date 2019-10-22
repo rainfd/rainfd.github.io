@@ -1,10 +1,10 @@
 ---
 title: 使用Hexo构建个人博客
+filename: Build-Hexo-Blog
 date: 2019-10-21 05:20:59
 tags: 
 categories: 
-typora-root-url: ./Build-hexo-blog
-typora-copy-images-to: ./Build-Hexo-Blog
+typora-copy-images-to: Build-Hexo-Blog
 ---
 
 方案: Hexo +  GitHub Page +  [NexT](https://github.com/theme-next/hexo-theme-next.git)
@@ -25,7 +25,8 @@ hexo是一个静态的博客网站，搭建比较简单。
 
 直接访问本地 http://lcoalhost:4000
 
-![hexo](hexo.png)
+
+![hexo](Build-Hexo-Blog/hexo.png)
 
 简单介绍一下hexo的目录结构
 
@@ -45,8 +46,6 @@ hexo是一个静态的博客网站，搭建比较简单。
 
 # Next主题
 
-hexo
-
     cd blog
     git clone https://github.com/theme-next/hexo-theme-next themes/next
 
@@ -62,11 +61,11 @@ hexo
 
 首页
 
-![](hexo.png)
+![](Build-Hexo-Blog/hexo.png)
 
 文章页面
 
-![page](page.png)
+![page](Build-Hexo-Blog/page.png)
 
 其中Next主题的目录结构如下：
 
@@ -142,7 +141,7 @@ hello
 $ hexo clean && hexo g && hexo s
 ```
 
-![](example.png)
+![](Build-Hexo-Blog/example.png)
 
 虽然现在可以直接开始写作了，但是现在页面和功能有些简陋。接下来就按照前面提到的需求逐一实现。
 
@@ -218,7 +217,6 @@ NexT主题已经默认添加了一个侧边栏，自动缩略在左下角。
 
 
 
-
 ### Markdown 支持
 
 默认的支持就足够了
@@ -263,7 +261,7 @@ NexT支持两种数学公式渲染引擎 MathJax和Katex
     \end{equation}\label{eq2}
     $$
 
-![flow](flow.png)
+![flow](Build-Hexo-Blog/flow.png)
 
 ### 代码高亮
 
@@ -303,9 +301,11 @@ NexT支持两种数学公式渲染引擎 MathJax和Katex
     }
     ```
 
-![](highlight.png)
+![](Build-Hexo-Blog/highlight.png)
 
 ### 文章图片支持
+
+Hexo3对图片的支持有两个改进，一个支持post_asset_folder,一个是asset_img。
 
 修改blog目录的_config.yml
 
@@ -322,15 +322,38 @@ NexT支持两种数学公式渲染引擎 MathJax和Katex
     drwxr-xr-x  2 rainfd  staff    64B 10 17 05:18 test
     -rw-r--r--  1 rainfd  staff    52B 10 17 05:18 test.md
 
-将所需要的图片放在这个目录，然后直接使用markdown就可以直接引用。
+我本地要使用Typora编辑文章，但Hexo(xx.png)与Typora(title/xx.png)正确识别的路径经常会不一致。
 
-    ![title](example.jpg)
+1. 安装插件
 
-这种使用方式存在一个问题就是这种相对路径引用在首页无法显示，要使该图片在首页显示正常，需要使用hexo的tag plugin
+```
+npm install --save-dev hexo-typora-image
+```
+
+2. 修改博客中的文章模板 **scaffolds/post.md**，添加typora-copy-images-to字段。
+
+```
+$ cat scaffolds/post.md
+---
+title: {{ title }}
+date: {{ date }}
+tags:
+categories:
+typora-copy-images-to: {{ titile }}
+...
+```
+
+3. 修改Typora图像设置
+
+![typora](Build-Hexo-Blog/typora.png)
+
+最终的效果是，讲图片拖入Typora后，图片会自动复制到文章目录，在源文件的路径是 `![title](Build-Hexo-Blog/example.jpg)`，在渲染时经过hexo-typora-image插件的修改变成 `![title](example.jpg)`，能正常在Hexo上显示。
+
+这种使用方式存在一个问题就是这种相对路径引用在首页无法显示，要使该图片在首页显示正常，需要使用之前提到的asset_img。
 
     {% asset_img example.jpg This is an example image %}
 
-![](background.png)
+![](Build-Hexo-Blog/background.png)
 
 上图中正常显示的就是使用了asset_img的图片。
 
@@ -374,7 +397,7 @@ Sequence和Flowchart直接在blog根目录安装插件就可以使用
     c2(no)->op2->e
     ```
 
-![](flow.png)
+![](Build-Hexo-Blog/flow.png)
 
 ## 网站收录
 
@@ -383,6 +406,7 @@ Sequence和Flowchart直接在blog根目录安装插件就可以使用
     # Google Webmaster tools verification.
     # See: https://www.google.com/webmasters
     google_site_verification:
+    # 请注意：DNS 更改可能要过一段时间才会生效。如果 Search Console 未能立即发现相应记录，请等待 1 天，然后重新尝试验证
     
     # Bing Webmaster tools verification.
     # See: https://www.bing.com/webmaster
@@ -397,6 +421,49 @@ Sequence和Flowchart直接在blog根目录安装插件就可以使用
     baidu_site_verification:
 
 ## 访问统计
+
+### 百度统计
+
+登录 http://tongji.baidu.com/ 注册，生成网站统计代码
+```javascript
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?appid";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+```
+
+使用代码中的appid填入到 _config.yml 的 badu_analytics 字段中。等待一段20分钟后就可以在百度统计看到相关数据。
+
+
+
+### 不蒜子
+
+在文章页面统计访问次数
+
+```
+busuanzi_count:
+  enable: false
+  total_visitors: true
+  total_visitors_icon: user
+  total_views: true
+  total_views_icon: eye
+  post_views: true
+  post_views_icon: eye
+```
+
+
+
+
+
+## 搜索
+
+
+
 
 
 

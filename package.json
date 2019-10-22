@@ -23,5 +23,8 @@
     "hexo-renderer-kramed": "^0.1.4",
     "hexo-renderer-stylus": "^1.1.0",
     "hexo-server": "^1.0.0"
+  },
+  "devDependencies": {
+    "hexo-typora-image": "^0.1.2"
   }
 }
