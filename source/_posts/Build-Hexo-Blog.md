@@ -217,11 +217,8 @@ NexT主题已经默认添加了一个侧边栏，自动缩略在左下角。
 
 
 
-### Markdown 支持
 
-默认的支持就足够了
-
-#### 数学公式
+### 数学公式
 
 要使用公式，要先替换掉原来有问题的默认引擎
 
@@ -357,7 +354,7 @@ typora-copy-images-to: {{ titile }}
 
 上图中正常显示的就是使用了asset_img的图片。
 
-## 流程图支持
+### 流程图支持
 
 Typora默认支持Sequence, Flowchart和Mermaid
 
@@ -399,7 +396,7 @@ Sequence和Flowchart直接在blog根目录安装插件就可以使用
 
 ![](Build-Hexo-Blog/flow.png)
 
-## 网站收录
+### 网站收录
 
 收录到各个搜索引擎。NexT主题已经设置了相关字段，只需要到各个网站注册就可以。
 
@@ -420,9 +417,9 @@ Sequence和Flowchart直接在blog根目录安装插件就可以使用
     # See: https://ziyuan.baidu.com/site
     baidu_site_verification:
 
-## 访问统计
+### 访问统计
 
-### Google Analytics
+#### Google Analytics
 
 https://www.google.com/webmasters/
 
@@ -434,7 +431,7 @@ https://www.google.com/webmasters/
 
 将content里面的id填入到主题的 google_site_verification 字段。
 
-### 百度统计
+#### 百度统计
 
 登录 http://tongji.baidu.com/ 注册，生成网站统计代码
 ```javascript
@@ -453,7 +450,7 @@ var _hmt = _hmt || [];
 
 
 
-### 不蒜子
+#### 不蒜子
 
 在文章页面统计访问次数
 
@@ -470,61 +467,30 @@ busuanzi_count:
 
 
 
+### 搜索
+
+#### Algolia
+
+NexT设置教程https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/ALGOLIA-SEARCH.md
+
+直接按照教程中的流程设置，但生成索引的时候，使用的key要改为api key。
+
+```
+# export HEXO_ALGOLIA_INDEXING_KEY=Search-Only API key
+$ export HEXO_ALGOLIA_INDEXING_KEY=API key
+$ hexo algolia
+```
+
+假设你是使用Travis CI进行部署的，还需要将这个key设置为环境变量，在构建脚本 .travis.yml 中添加
+
+```
+script:
+  - hexo generate
+  - hexo algolia # build index
+deploy:
+```
 
 
-## 搜索
 
+### 评论
 
-
-
-
-
-
-
-需求：
-
-- Makrdown支持
-
-    最好与typora或者notion兼容，本地编辑后不用修改即可直接上传
-
-    - 数学公式
-    - 代码高亮
-    - ~~调整好多级字体大小~~
-- 文章图片支持
-
-    方便d本地编辑和上传
-
-- 流程图支持
-
-    流程图插件，支持直接代码绘制流程图，便于直接编辑
-
-    或者使用processon等画图软件，想方法上传的同时保存原文件
-
-- 网站收录
-
-    网站收录是啥，seo？？
-
-- 访问统计
-
-    满足一下虚荣感。
-
-    我在博客园发表的第一篇文章是一篇Python官方文档中的博客译文。原文应该是04、05年左右的文章，里面提到的很多技术栈现在也基本没人用了，当然我也翻得很烂，但现在有1w+的阅读量，网上搜还有几个人转载。不管写的什么，想到有这么多人在看我写的东西，感觉上
-
-- 评论
-  
-    - 评论删除
-- 自动生成侧边栏目录
-- 搜索服务
-- 首页
-    - 文章简介
-    - 标签
-    - 分类
-
-步骤:
-
-- 调整首页样式
-- 调整侧边栏样式
-
-参考
-
-1. [https://www.liuyude.com/How_to_make_your_HEXO_blog_support_handwriting_flowchart.html](https://www.liuyude.com/How_to_make_your_HEXO_blog_support_handwriting_flowchart.html)
