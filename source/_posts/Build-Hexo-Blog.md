@@ -494,3 +494,26 @@ deploy:
 
 ### 评论
 
+#### gitalk
+在Github上新注册OAuth应用
+https://github.com/settings/applications/new
+
+![oauth](Build-Hexo-Blog/oauth.png)
+
+Homepage URL和 Authorization callback URL 都填博客的地址 username.github.io
+
+注册完获取到Client ID 和 Client Secret，修改主题中的配置 _config.yml
+
+```
+gitalk:
+  enable: true
+  github_id: rainfd # GitHub repo owner
+  repo: rainfd.github.io # Repository name to store issues
+  client_id:  # GitHub Application Client ID
+  client_secret:  # GitHub Application Client Secret
+  admin_user: rainfd # GitHub repo owner and collaborators, only these guys can initialize gitHub issues
+  distraction_free_mode: true # Facebook-like distraction free mode
+  # Available values: en | es-ES | fr | ru | zh-CN | zh-TW
+  language: zh-CN
+```
+
