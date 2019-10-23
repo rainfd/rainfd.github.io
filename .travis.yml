@@ -7,7 +7,9 @@ branches:
   only:
     - source # build master branch only
 script:
+  - hexo clean
   - hexo generate # generate static files
+  - hexo algolia  
 deploy:
   provider: pages
   skip-cleanup: true

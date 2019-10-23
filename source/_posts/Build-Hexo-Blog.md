@@ -422,6 +422,18 @@ Sequence和Flowchart直接在blog根目录安装插件就可以使用
 
 ## 访问统计
 
+### Google Analytics
+
+https://www.google.com/webmasters/
+
+进入后选择
+
+![google_seo](Build-Hexo-Blog/google_seo.png)
+
+![google_meta](Build-Hexo-Blog/google_meta.png)
+
+将content里面的id填入到主题的 google_site_verification 字段。
+
 ### 百度统计
 
 登录 http://tongji.baidu.com/ 注册，生成网站统计代码

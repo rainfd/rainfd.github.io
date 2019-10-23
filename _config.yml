@@ -91,3 +91,9 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type:
+
+algolia:
+  applicationID: '34LIFT72X3'
+  apiKey: '442885890868b44e86f923713b8403c9'
+  indexName: 'blog'
+  chunkSize: 5000
