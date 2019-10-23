@@ -63,7 +63,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;10&#x2F;20&#x2F;Travis-CI-Build-GithubPage&#x2F;travis_env.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;10&#x2F;20&#x2F;Travis-CI-Build-GithubPage&#x2F;build_status.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;10&#x2F;20&#x2F;Travis-CI-Build-GithubPage&#x2F;build_failed.png">
-<meta property="og:updated_time" content="2019-10-23T02:34:30.328Z">
+<meta property="og:updated_time" content="2019-10-23T07:22:24.507Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;10&#x2F;20&#x2F;Travis-CI-Build-GithubPage&#x2F;github_build.png">
 
@@ -258,7 +258,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-23 10:34:30" itemprop="dateModified" datetime="2019-10-23T10:34:30+08:00">2019-10-23</time>
+                <time title="修改时间：2019-10-23 15:22:24" itemprop="dateModified" datetime="2019-10-23T15:22:24+08:00">2019-10-23</time>
               </span>
 
           
@@ -350,9 +350,6 @@
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/2019/10/16/test/" rel="next" title="test">
-                  <i class="fa fa-chevron-left"></i> test
-                </a>
             </div>
 
             <span class="post-nav-divider"></span>
@@ -375,6 +372,7 @@
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
         </div>
           
@@ -415,7 +413,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -613,6 +611,24 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'f05e3169de9741f17ed8',
+      clientSecret: '454d4119678dcdeaa500428d501728f33901fe9b',
+      repo: 'rainfd.github.io',
+      owner: 'rainfd',
+      admin: ['rainfd'],
+      id: '393e118fb4c425d4aae2115eddb2c41e',
+        language: 'zh-CN',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
 
 </body>
 </html>
