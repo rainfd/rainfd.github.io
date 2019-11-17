@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-test
+  namespace: disk
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    # resources:
+    # requests:
+    # ephemeral-storage: "2Gi"
+    # limits:
+    # ephemeral-storage: "4Gi"
