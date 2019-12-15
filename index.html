@@ -219,6 +219,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2019/12/15/Redis-Timeout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/sc2.jpg">
+      <meta itemprop="name" content="RainFD">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainFD's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/15/Redis-Timeout/" class="post-title-link" itemprop="url">记一次线上Redis警报</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-16 01:02:34 / 修改时间：05:40:11" itemprop="dateCreated datePublished" datetime="2019-12-16T01:02:34+08:00">2019-12-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<p>这周周五收到了两个不同系统的Redis集群警报，无独有偶，都是提示连接数超过80%。这个问题在公司其他系统挺常见的，在此记录一下。</p>
+<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><h2 id="前置信息"><a href="#前置信息" class="headerlink" title="前置信息"></a>前置信息</h2><ul>
+<li><p>应用A是一个NodeJS应用，部署在VMWare的虚拟机上已经在线上运行了400多天；</p>
+</li>
+<li><p>应用B是一个Scala应用，部署在私有化的Azure Container Service(ACS)上，周三刚进行了更新；</p>
+</li>
+<li><p>应用A和B在物理和业务上都没有关联；</p>
+</li>
+<li><p>Redis集群为一主两从，单个节点大小为5G，版本为3.2。系统A的Redis集群为15G，系统B为120G</p>
+</li>
+<li><p>警报提示Redis服务器的连接数超过了3200，原上限为4000。</p>
+</li>
+</ul>
+<h2 id="线上情况"><a href="#线上情况" class="headerlink" title="线上情况"></a>线上情况</h2><p>首先在监控界面上可以观察到，两个Redis集群所以的中有几个节点连接数超了3200，各个节点的连接数不一样。</p>
+<p>那么可以初步推断不是应用的问题，因为应用连接Redis集群会连接所有的节点，正常情况下每个节点的连接数都是大致一样的。随后就在检查了应用A和B所在主机的TCP连接数，果然发现与Redis相关的连接很少。</p>
+<p>然后我们登录进了Redis终端，使用<code>CLIENT LIST</code>来查看当前服务器的连接情况。发现了大量空闲的连接，存活时间最长的有近400天。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis x.x.x.x:6379&gt; CLIENT LIST</span><br><span class="line">id=x addr=x.x.x.x:xx fd=6 age=19089992 idle=19089992 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=32768 obl=0 oll=0 omem=0 events=r cmd=cluster</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这让我突然想起了前一段时间，ACS平台发的一则通告。通告中提醒，ACS平台由于底层的特性，TCP连接会在闲置240s后自动断开，平台的同事提醒开发们要留意会不会对应用造成影响。</p>
+<p>回到这个问题上，上述的空闲连接应该是应用异常退出没有发送FIN包或者网络异常导致FIN包发送失败。在Redis服务端没有察觉到该连接已经是死掉的链接，经过长时间的积累，这样无用的连接积累到一定的程度触发了报警。</p>
+<p>查了查Redis与之相关的参数，有timeout和tcp-keepalive两个：</p>
+<ul>
+<li>timeout不为0时，服务端上的连接空闲一段后自动断开；</li>
+<li>tcp-keepalive不为0时，服务端定时发送ACK包到客户端，来检测这条连接是否存活。</li>
+</ul>
+<p>而服务器配置上的两个参数都为0，即都为关闭状态，所以只要FIN包没有正常发送到服务器，这条连接就会一直保留。</p>
+<p>找到了根源那问题就好解决，由于Redis支持配置的热修改，我们直接设置timeout为240s tcp-keepalive为30s。过了几秒后，Redis集群的各个连接数降到正常范围内，问题完美解决。</p>
+<h1 id="总结改进"><a href="#总结改进" class="headerlink" title="总结改进"></a>总结改进</h1><p>其实ACS平台的同事早有提醒 ，只不是是我们没有想到对Redis服务器有影响。为了避免这个问题，所有的Redis集群的默认配置都应该加上这两个参数。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2019/10/31/K8s-Disk-Resource-Consumption/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -250,7 +336,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-29 15:35:00" itemprop="dateModified" datetime="2019-11-29T15:35:00+08:00">2019-11-29</time>
+                <time title="修改时间：2019-12-16 05:40:11" itemprop="dateModified" datetime="2019-12-16T05:40:11+08:00">2019-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -333,7 +419,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-29 15:35:00" itemprop="dateModified" datetime="2019-11-29T15:35:00+08:00">2019-11-29</time>
+                <time title="修改时间：2019-12-16 05:40:11" itemprop="dateModified" datetime="2019-12-16T05:40:11+08:00">2019-12-16</time>
               </span>
 
           
@@ -422,7 +508,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -435,7 +521,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
