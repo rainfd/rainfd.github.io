@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+  <meta name="google-site-verification" content="Ggq4vctANgBPr2QFD8E3j_RBUm2T8ZbVjlGZMg4Sres">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="什么是Ansible？Ansible能干什么？">
+<meta name="keywords" content="Devops">
+<meta property="og:type" content="article">
+<meta property="og:title" content="成为DevOps工程师-配置Ansible篇">
+<meta property="og:url" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;20&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AEAnsible%E7%AF%87&#x2F;index.html">
+<meta property="og:site_name" content="RainFD&#39;s Blog">
+<meta property="og:description" content="什么是Ansible？Ansible能干什么？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;20&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AEAnsible%E7%AF%87&#x2F;ansible-architechture.png">
+<meta property="og:updated_time" content="2020-02-03T19:56:27.764Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;20&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AEAnsible%E7%AF%87&#x2F;ansible-architechture.png">
+
+<link rel="canonical" href="https://rainfd.github.io/2019/04/20/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AEAnsible%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>成为DevOps工程师-配置Ansible篇 | RainFD's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?77670cc2555d4f085d80e590bdbbccbe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RainFD's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Walking in the Rain</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2019/04/20/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AEAnsible%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/sc2.jpg">
+      <meta itemprop="name" content="RainFD">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainFD's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          成为DevOps工程师-配置Ansible篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-20 10:10:10" itemprop="dateCreated datePublished" datetime="2019-04-20T10:10:10+08:00">2019-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-04 03:56:27" itemprop="dateModified" datetime="2020-02-04T03:56:27+08:00">2020-02-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88/" itemprop="url" rel="index">
+                    <span itemprop="name">成为DevOps工程师</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>什么是Ansible？Ansible能干什么？</p>
+<a id="more"></a>
+<h2 id="Ansible是什么"><a href="#Ansible是什么" class="headerlink" title="Ansible是什么"></a>Ansible是什么</h2><p>Ansible，一个配置管理和IT自动化工具。简单来说就是讲一个将脚本自动化的工具。</p>
+<p>想象一下，现在要你手工地在几十台机器上部署十几个服务，中间还偶尔来一些升级失败和回滚，那简直就是一个灾难。这时候Puppet，Chef和Ansible这类自动化工具就是运维人员的救星。</p>
+<h2 id="为什么选择Ansible"><a href="#为什么选择Ansible" class="headerlink" title="为什么选择Ansible"></a>为什么选择Ansible</h2><ol>
+<li>无代理模式，配上ssh key就可以快速完成整个系统的搭建</li>
+<li>国内使用人数多，在招聘网站上自动化运维的应聘要求大多数都有ansible</li>
+<li>大量模板支持，常用的基础软件安装在网上就可以找到对应的模板</li>
+<li>简单，概念不多，容易上手</li>
+</ol>
+<h2 id="Ansible-架构"><a href="#Ansible-架构" class="headerlink" title="Ansible 架构"></a>Ansible 架构</h2><img src="/2019/04/20/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AEAnsible%E7%AF%87/ansible-architechture.png" class="">
+<p>这是从网上找来的Ansible的架构图，从图中可以看到Ansible 内部的提供了Inventory, Modules, Plugins 几个核心组件，用户通过ansible-playbook 或者其他API的方式来调用这些组件来将自动化任务运行在目标主机上。</p>
+<hr>
+<h2 id="Ansible-安装"><a href="#Ansible-安装" class="headerlink" title="Ansible 安装"></a>Ansible 安装</h2><p>Linux 系统上直接使用python 的 pip 安装<code>pip install ansible</code>。</p>
+<p><em>——Ansible对Windows和MacOs的支持都有问题，不建议踩坑。</em></p>
+<p>安装成功后用<code>ansible —version</code>来检验是否安装成功</p>
+<hr>
+<h2 id="Ansible-使用"><a href="#Ansible-使用" class="headerlink" title="Ansible 使用"></a>Ansible 使用</h2><p>对于一般使用Ansible只需要掌握以下的几个核心功能：</p>
+<ul>
+<li>host inventory</li>
+<li>ansible cli command</li>
+<li>module</li>
+<li>playbook</li>
+</ul>
+<p>引用Ansible文档中的一句描述：</p>
+<blockquote>
+<p>If Ansible modules are the tools in your workshop, playbooks are your instrction manuals, and your inventory of hosts are your raw material.</p>
+</blockquote>
+<hr>
+<h3 id="Host-inventory"><a href="#Host-inventory" class="headerlink" title="Host  inventory"></a>Host  inventory</h3><p>使用Ansible一般要连接很多台主机，而inventory就是用声明这些主机的一个文件。</p>
+<p>它的格式可以是INI形式的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mail.example.com</span><br><span class="line"></span><br><span class="line">[webservers]</span><br><span class="line">foo.example.com</span><br><span class="line">bar.example.com</span><br><span class="line"></span><br><span class="line">[dbservers]</span><br><span class="line">one.example.com</span><br><span class="line">two.example.com</span><br><span class="line">three.example.com</span><br></pre></td></tr></table></figure>
+<p>也可以是yaml形式的：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">all:</span></span><br><span class="line"><span class="attr">  hosts:</span></span><br><span class="line">    <span class="string">mail.example.com:</span></span><br><span class="line"><span class="attr">  children:</span></span><br><span class="line"><span class="attr">    webservers:</span></span><br><span class="line"><span class="attr">      hosts:</span></span><br><span class="line">        <span class="string">foo.example.com:</span></span><br><span class="line">        <span class="string">bar.example.com:</span></span><br><span class="line"><span class="attr">    dbservers:</span></span><br><span class="line"><span class="attr">      hosts:</span></span><br><span class="line">        <span class="string">one.example.com:</span></span><br><span class="line">        <span class="string">two.example.com:</span></span><br><span class="line">        <span class="string">three.example.com:</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在Ansible的配置中一般都同时支持这两种形式的配置</p>
+</blockquote>
+<p>可以看到上面的实例配置中还支持分组，通过命名来代表一组主机。除了声明ip/host name外，还可以支持其他参数：</p>
+<p><code>jumper ansible_port=5555 ansible_user=root</code></p>
+<hr>
+<h3 id="Ansible-cli-command-amp-amp-module"><a href="#Ansible-cli-command-amp-amp-module" class="headerlink" title="Ansible cli command &amp;&amp; module"></a>Ansible cli command &amp;&amp; module</h3><p>大家在看Ansible相关介绍的时候，常看到它表明的一个优点是agentless，那它是怎么做到的呢？</p>
+<p>其实很简单，就是通过ssh，只要连接前把控制主机的key加入到被控主机的authorized key中，Ansible就可以通过ssh的方式实现它的控制。</p>
+<p>为了方便测试，我们将本地主机加入到inventory：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost</span><br></pre></td></tr></table></figure>
+<p>保存其为hosts(Ansible读取的inventory名默认为hosts)，并将主机的pub key添加到本地的authroized key中。接着输入：</p>
+<p><code>ansible -i hosts all -m ping</code></p>
+<p>如果没有意外，就会输出如下内容，表示你与inventory中的主机成功连接。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">localhost | SUCCESS =&gt; &#123;</span><br><span class="line">    <span class="string">"changed"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"ping"</span>: <span class="string">"pong"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下是命令<code>ansible -i hosts all -m ping</code>的解释说明</p>
+<ul>
+<li><code>ansible</code>是ansible的cli工具，用来测试或者连接主机执行一些简单的任务，如果要执行的内容比较复杂或者很多，就需要使用ansible-playbook，这个下文会提到，这里先跳过。</li>
+<li><code>-i hosts</code> 表示你选择的主机列表是哪个文件，一般默认为~/.ansible/hosts。除了使用默认文件后者使用-i指定外，还可以配置环境变量来改变这个文件的读取路径，详见<a href="https://docs.ansible.com/ansible/latest/index.html" target="_blank" rel="noopener">官方文档</a></li>
+<li><code>all</code>表示选择所有的主机。如果你则inventory中设置了分组，如上述例子中的webservers，这里变为webservers则表示只连接这一小组的主机。</li>
+<li><code>-m ping</code>表示使用的是ping模块。module模块是ansible提供的用来简化操作的工具，常见的有shell(执行shell命名)，cp(复制文件到目标主机)，file（创建文件，修改文件权限）等等。其中最常用的就是ping模块，用来测试inventory中的主机是否连通</li>
+</ul>
+<hr>
+<h3 id="Playbook"><a href="#Playbook" class="headerlink" title="Playbook"></a>Playbook</h3><p>Playbook的中文意思是剧本，Ansible中的Playbook也就是将一系列的操作组合在一起，来达到复用的目的。Ansible为什么这么流行的其中一个原因就是playbook的便捷，官方还有许多开发者将一些常用的软件的安装过程写成可复用的ansible playbook。使用者只需要把这个playbook下载下来就可以直接执行。</p>
+<p>playbook支持yaml的语法，一个playbook的目录结构如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">├── defaults</span><br><span class="line">│   └── main.yml</span><br><span class="line">├── files</span><br><span class="line">├── handlers</span><br><span class="line">│   └── main.yml</span><br><span class="line">├── tasks</span><br><span class="line">│   └── main.yml</span><br><span class="line">├── templates</span><br><span class="line">│   ├── example.conf.j2</span><br><span class="line">└── vars</span><br><span class="line">    └── main.yml</span><br></pre></td></tr></table></figure></p>
+<p>我们先从tasks的main.yml开始</p>
+<h4 id="tasks"><a href="#tasks" class="headerlink" title="tasks"></a>tasks</h4><p>main.yml一般作为入口文件，可以在这里完成所有的任务，也可以加载其他的任务。</p>
+<p>以下是一个将django应用的安装playbook，内容包括了初始目录，代码复制和启动应用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"># 安装django</span><br><span class="line">- name: install django</span><br><span class="line">  shell: pip install &quot;django&#123;&#123; django_version &#125;&#125;&quot;</span><br><span class="line"></span><br><span class="line"># 初始化目录</span><br><span class="line">- name: init directory</span><br><span class="line">  file:</span><br><span class="line">    path: &quot;&#123;&#123; project_path &#125;&#125;&quot;</span><br><span class="line">    state: directory</span><br><span class="line">  notify:</span><br><span class="line">    - restart example</span><br><span class="line"></span><br><span class="line"># 复制代码到目标目录</span><br><span class="line">- name: copy code to target directory</span><br><span class="line">  copy:</span><br><span class="line">    src: mysite</span><br><span class="line">    dest: &quot;&#123;&#123; root_path &#125;&#125;&quot;</span><br><span class="line"></span><br><span class="line"># 生成配置文件</span><br><span class="line">- name: template supervisor file</span><br><span class="line">  template:</span><br><span class="line">    src: example.j2</span><br><span class="line">    dest: &quot;&#123;&#123; supervisor_app_path &#125;&#125;&quot;</span><br><span class="line">  notify:</span><br><span class="line">    # 加载supervisor配置文件</span><br><span class="line">    - reread example</span><br><span class="line">    # 重启应用</span><br><span class="line">    - restart example</span><br></pre></td></tr></table></figure>
+<p>可以看到，每一个步骤都是一个模块。也就是说，在playbook中，需要将你以往手动操作的指令转化为一个个小的任务，通过模块来实现的你目标。</p>
+<hr>
+<h4 id="vars和default"><a href="#vars和default" class="headerlink" title="vars和default"></a>vars和default</h4><p>这两个文件夹都是用来存放变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">--- </span><br><span class="line"># vars/main.yml</span><br><span class="line">project_user: root</span><br><span class="line">root_path: /tmp</span><br><span class="line">project_path: /tmp/mysite</span><br><span class="line">log_path: /tmp/mysite/log</span><br><span class="line">program_name: example</span><br><span class="line">supervisor_app_path: /etc/supervisor/conf.d/example.conf</span><br><span class="line">---</span><br><span class="line"># default/main.yml</span><br><span class="line">django_version: &quot;&lt;2&quot;</span><br></pre></td></tr></table></figure>
+<p>这里声明的变量，就可以在其他文件中使用&#123;&#123; vars &#125;&#125;的方式进行引用。而vars和default的区别就是其名字代表的含义，default中的变量一般设置完后就不需要改变，而vars中的变量经常需要根据不同的需求和环境和进行变更。</p>
+<hr>
+<h4 id="templates"><a href="#templates" class="headerlink" title="templates"></a>templates</h4><p>templates常用与生成不同的软件配置文件，它使用<code>Jinja2</code>语法来生成文件，变量引用的<br>&#123;&#123; &#125;&#125;符号就是来自<code>Jinja2</code>。通过与vars和default中变量的结合，使用在tasks中使用template就可以快速生成新的配置文件，文中例子中就使用它来生成supervisor的配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[program:&#123;&#123; program_name &#125;&#125;]</span><br><span class="line">command=python manage.py runserver</span><br><span class="line">autostart=true ; supervisord守护程序启动时自动启动tornado</span><br><span class="line">autorestart=true ; supervisord守护程序重启时自动重启tornado</span><br><span class="line">redirect_stderr=true ; 将stderr重定向到stdout</span><br><span class="line">user=&#123;&#123; project_user &#125;&#125;</span><br><span class="line">directory=&#123;&#123; project_path &#125;&#125; ; cd 到应用目录</span><br><span class="line">stdout_logfile=&#123;&#123; log_path &#125;&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="files"><a href="#files" class="headerlink" title="files"></a>files</h4><p>除了配置文件，通过还有一些不变的文件（例如验证密钥，环境变量文件）需要复制到目标主机。这里就使用它配合cp模块来将代码发送到目标主机。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">- name:</span> <span class="string">copy</span> <span class="string">code</span> <span class="string">to</span> <span class="string">target</span> <span class="string">directory</span></span><br><span class="line"><span class="attr">  copy:</span></span><br><span class="line"><span class="attr">    src:</span> <span class="string">mysite</span></span><br><span class="line"><span class="attr">    dest:</span> <span class="string">"<span class="template-variable">&#123;&#123; root_path &#125;&#125;</span>"</span></span><br></pre></td></tr></table></figure>
+<p>当然下载代码更一般的方法是通过git来下载，在ansible中也提供了git这个模块。</p>
+<h4 id="handlers"><a href="#handlers" class="headerlink" title="handlers"></a>handlers</h4><p>handlers一般负责服务的启停</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">- name: reread example</span><br><span class="line">  supervisorctl:</span><br><span class="line">    name: example</span><br><span class="line">    state: present</span><br><span class="line"></span><br><span class="line">- name: start example</span><br><span class="line">  supervisorctl:</span><br><span class="line">    name: example</span><br><span class="line">    state: started</span><br><span class="line"></span><br><span class="line">- name: restart example</span><br><span class="line">  supervisorctl:</span><br><span class="line">    name: example</span><br><span class="line">    state: restarted</span><br><span class="line"></span><br><span class="line">- name: delete example</span><br><span class="line">  supervisorctl:</span><br><span class="line">    name: example</span><br><span class="line">    state: present</span><br></pre></td></tr></table></figure>
+<p>那handlers种的任务是如何调用的呢？你可以从上面的命令中注意到一个关键字<code>notify</code>。</p>
+<p>在这里就要暂停一下，先引入Ansible关于任务的几个概念。在Ansible执行每一个小任务的时候（对应task/main.yml中的一个模块），都会输出这个任务完成的状态。</p>
+<p>状态分两种：success，failed。一般情况下，如果一个任务的执行结果为failed，那么整个playbook都会因此而终止。而success也会分为两种，一个changed=true, 另一种changed=false。changed=true表示它执行的内容与上一次执行的不同，例如我使用cp模块复制的文件不同了，使用tempaltes生成的内容也不同了等等。</p>
+<p>回到notify，它的内容是一个handler列表。在playbook执行过程中，notify就会识别任务changed状态，即任务发生变更时，才会执行notify中的任务。由于这个特性，使得它能与服务启停很好地配合。</p>
+<p>在上面实例的task中，在代码发生变更或者supervisor配置文件发生变更的时候才去重启任务。如果只使用在task中使用普通的模块来完成服务启停，那么当你的代码和配置文件没有发生变更的时候，它都会去重启服务，这在很多场景下就不合适了。</p>
+<p>我把常见的playbook目录内容都介绍了一遍，但不知道你有没有留意上面例子<code>task/main.yaml</code>中的第一个任务：使用shell模块安装django<code>pip install django</code>。你有没有想过一般机器上原来是没有安装pip？更何况我们用来启动django的supervisor呢？</p>
+<p>那我是不是要在这里加上pip和supervisor的安装步骤呢？当然不需要，就像我开始介绍playbook所说的，你轻易可以在网上找到安装它们的playbook，但是这个要怎么与现在安装django应用的playbook结合呢？</p>
+<h3 id="roles"><a href="#roles" class="headerlink" title="roles"></a>roles</h3><p>这就是roles的作用。Ansible通过引入roles来区分不同的playbook，类似于不同的演员拿不同的剧本，各司其职。</p>
+<p>加入roles后的目录结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">roles</span><br><span class="line">├── example</span><br><span class="line">│   ├── defaults</span><br><span class="line">│   ├── files</span><br><span class="line">│   ├── handlers</span><br><span class="line">│   ├── hosts</span><br><span class="line">│   ├── meta</span><br><span class="line">│   ├── tasks</span><br><span class="line">│   ├── templates</span><br><span class="line">│   ├── tests</span><br><span class="line">│   └── vars</span><br><span class="line">├── geerlingguy.pip</span><br><span class="line">└── geerlingguy.supervisor</span><br></pre></td></tr></table></figure>
+<p>显然现在还缺一个入口文件来调用两个playbook</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="comment"># django.yml</span></span><br><span class="line"><span class="attr">- hosts:</span> <span class="string">all</span></span><br><span class="line"><span class="attr">  roles:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">geerlingguy.supervisor</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">geerlingguy.pip</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">django</span></span><br></pre></td></tr></table></figure>
+<p>现在可以调用ansible-playbook来安装我们的django应用::</p>
+<p><code>ansible-playbook -i hosts django.yml</code></p>
+<hr>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>实际的运维任务并不一定跟上述例子中的步骤相似，所以在写playbook前，一般要先把任务进行拆分，再次以部署django应用为例, 它的任务可以拆分为：</p>
+<ol>
+<li>安装依赖(pip, supervisor, Django)</li>
+<li>初始化机器目录</li>
+<li>复制代码到目标主机</li>
+<li>启动/重启服务</li>
+</ol>
+<p>其中安装依赖一部分可交给其他playbook完成，启停服务由handler完成，目录、服务参数、django版本参数等放到default和vars中的变量中，代码可以放在files中方便复制，完整的任务流程就放在task中编写。</p>
+<p>一旦完成拆分，接下来编写playbook就是时间问题了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Devops/" rel="tag"># Devops</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/" rel="next" title="成为DevOps工程师-配置Terraform篇">
+                  <i class="fa fa-chevron-left"></i> 成为DevOps工程师-配置Terraform篇
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/" rel="prev" title="成为DevOps工程师-版本控制Git篇">
+                  成为DevOps工程师-版本控制Git篇 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ansible是什么"><span class="nav-number">1.</span> <span class="nav-text">Ansible是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选择Ansible"><span class="nav-number">2.</span> <span class="nav-text">为什么选择Ansible</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ansible-架构"><span class="nav-number">3.</span> <span class="nav-text">Ansible 架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ansible-安装"><span class="nav-number">4.</span> <span class="nav-text">Ansible 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ansible-使用"><span class="nav-number">5.</span> <span class="nav-text">Ansible 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Host-inventory"><span class="nav-number">5.1.</span> <span class="nav-text">Host  inventory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ansible-cli-command-amp-amp-module"><span class="nav-number">5.2.</span> <span class="nav-text">Ansible cli command &amp;&amp; module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Playbook"><span class="nav-number">5.3.</span> <span class="nav-text">Playbook</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tasks"><span class="nav-number">5.3.1.</span> <span class="nav-text">tasks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vars和default"><span class="nav-number">5.3.2.</span> <span class="nav-text">vars和default</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#templates"><span class="nav-number">5.3.3.</span> <span class="nav-text">templates</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#files"><span class="nav-number">5.3.4.</span> <span class="nav-text">files</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#handlers"><span class="nav-number">5.3.5.</span> <span class="nav-text">handlers</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#roles"><span class="nav-number">5.4.</span> <span class="nav-text">roles</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">5.4.1.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="RainFD"
+    src="/images/sc2.jpg">
+  <p class="site-author-name" itemprop="name">RainFD</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:rainfd@live.cn" title="E-Mail &amp;rarr; mailto:rainfd@live.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RainFD</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.1
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/muse.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script><script src="/js/algolia-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'f05e3169de9741f17ed8',
+      clientSecret: '454d4119678dcdeaa500428d501728f33901fe9b',
+      repo: 'rainfd.github.io',
+      owner: 'rainfd',
+      admin: ['rainfd'],
+      id: 'a0718b3b745f1710b1bafe27205b6b30',
+        language: 'zh-CN',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+  <meta name="google-site-verification" content="Ggq4vctANgBPr2QFD8E3j_RBUm2T8ZbVjlGZMg4Sres">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="网上关于Git的文章实在是太多了，所以我就不浪费时间介绍一些基本概念和操作。在这里我推荐一些相关的资源，以及介绍一些不常见但实用的技巧。">
+<meta name="keywords" content="Devops">
+<meta property="og:type" content="article">
+<meta property="og:title" content="成为DevOps工程师-版本控制Git篇">
+<meta property="og:url" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;index.html">
+<meta property="og:site_name" content="RainFD&#39;s Blog">
+<meta property="og:description" content="网上关于Git的文章实在是太多了，所以我就不浪费时间介绍一些基本概念和操作。在这里我推荐一些相关的资源，以及介绍一些不常见但实用的技巧。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cn.bing.com&#x2F;th?id=OIP.B-a2W-OEiR4pZistagWjmQHaDt&amp;pid=Api&amp;rs=1&amp;p=0">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;git-graph.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;git-flow.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;github.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;gitlab.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;gogs.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;bitbucket.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;gitee.svg">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;kanban.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;github-desktop.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;sourcetree.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;vs-git.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;05&#x2F;18&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87&#x2F;gitlab_tree.png">
+<meta property="og:updated_time" content="2020-02-03T19:56:27.756Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cn.bing.com&#x2F;th?id=OIP.B-a2W-OEiR4pZistagWjmQHaDt&amp;pid=Api&amp;rs=1&amp;p=0">
+
+<link rel="canonical" href="https://rainfd.github.io/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>成为DevOps工程师-版本控制Git篇 | RainFD's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?77670cc2555d4f085d80e590bdbbccbe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RainFD's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Walking in the Rain</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/sc2.jpg">
+      <meta itemprop="name" content="RainFD">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainFD's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          成为DevOps工程师-版本控制Git篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-18 09:10:38" itemprop="dateCreated datePublished" datetime="2019-05-18T09:10:38+08:00">2019-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-04 03:56:27" itemprop="dateModified" datetime="2020-02-04T03:56:27+08:00">2020-02-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88/" itemprop="url" rel="index">
+                    <span itemprop="name">成为DevOps工程师</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img src="https://cn.bing.com/th?id=OIP.B-a2W-OEiR4pZistagWjmQHaDt&pid=Api&rs=1&p=0" class="git" width="300" height="20">
+<p>网上关于Git的文章实在是太多了，所以我就不浪费时间介绍一些基本概念和操作。<br>在这里我推荐一些相关的资源，以及介绍一些不常见但实用的技巧。</p>
+<a id="more"></a>
+<h3 id="Git-图形化教程"><a href="#Git-图形化教程" class="headerlink" title="Git 图形化教程"></a>Git 图形化教程</h3><p>Link: <a href="https://learngitbranching.js.org/" target="_blank" rel="noopener">https://learngitbranching.js.org/</a></p>
+<img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/git-graph.png" class="">
+<p>这个教程涵盖了常用的git fetch, git pull, git push, git revert, git reset, git chekcout等命令。通过图形和动画，以树的形式展现了平常操支时分支树的变化。整个教程形象生动，非常推荐新手试一试。</p>
+<h3 id="Git-工作流"><a href="#Git-工作流" class="headerlink" title="Git 工作流"></a>Git 工作流</h3><p>Link: <a href="http://www.ruanyifeng.com/blog/2015/12/git-workflow.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-workflow.html</a></p>
+<img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/git-flow.png" class="">
+<p>介绍了3个常用的Git工作流程： </p>
+<ul>
+<li>Git flow</li>
+<li>Github flow</li>
+<li>Gitlab flow</li>
+</ul>
+<p>这个博客除了有很多Git相关的教程外，还有许多高质量的文章，都很值得一看。</p>
+<h3 id="Git-服务器"><a href="#Git-服务器" class="headerlink" title="Git 服务器"></a>Git 服务器</h3><p>除了最常用的Github之外，还有其他Git服务器</p>
+<ul>
+<li>Gitlab</li>
+<li>Gogs</li>
+<li>Bitbucket</li>
+<li>码云</li>
+</ul>
+<h4 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h4><img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/github.png" class="">
+<p>Github的基础服务是免费，当然，那也意味着你的代码仓库也是公开。在1月份的时候，Github宣布免费开放个人私有仓库的，但只支持3个成员，无论是公司还是小团队都是不够用。</p>
+<h4 id="Gitlab"><a href="#Gitlab" class="headerlink" title="Gitlab"></a>Gitlab</h4><img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/gitlab.png" class="">
+<p>如何要介绍一款功能最多的Git服务器，那毫无疑问就是Gitlab。除了在Github的基础上添加大量实用的功能，最近Gitlab也在自己的Gitlab中嵌入了CI持续集成服务，与Kubernetes高度集成，有点与Jenkins在CI领域一争高下的意思。</p>
+<p>当然Gitlab的缺点也很明显，它的高级功能都是收费的，而且它真的”很重”，占用的内存非常的多。</p>
+<h4 id="Gogs"><a href="#Gogs" class="headerlink" title="Gogs"></a>Gogs</h4><img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/gogs.png" class="">
+<p>一款用Go写的轻量级Git服务器，提供了最基本的Git、Wiki和Issue。网上人有将Gogs运行在树莓派上，足以看出它是多么地”轻”。如果团队人数不多，Gogs是一个很不错的选择。</p>
+<h4 id="Bitbucket"><a href="#Bitbucket" class="headerlink" title="Bitbucket"></a>Bitbucket</h4><img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/bitbucket.png" class="">
+<p>ATLASSIAN家的又一组件，能与Jira和Trello(国外一款Kanban软件)整合。国内用的人不多。</p>
+<h4 id="码云"><a href="#码云" class="headerlink" title="码云"></a>码云</h4><img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/gitee.svg" class="">
+<p>国内Git服务首选，包含了不少Gitlab中的功能。如果担心Github被墙，是一个还可以的替代选择。</p>
+<p>码云主要的用户是国内传统公司，他们采购国外的Git服务器比较麻烦，而且码云的本地化确实不错，与微信和钉钉都有集成。</p>
+<h3 id="Issue-Wiki-Kanban"><a href="#Issue-Wiki-Kanban" class="headerlink" title="Issue, Wiki, Kanban"></a>Issue, Wiki, Kanban</h3><p>最常见的也是最容易忽略的：Issue 缺陷跟踪，Wiki文档管理。</p>
+<p>虽然经常在Github上查看别人提交的Issue，但我在几个公司都看不到有使用Issue做缺陷跟踪的。</p>
+<p>许多开源项目都有自己的主要放文档，但是维护一个网站来管理文档还是太麻烦了，直接使用Git服务提供的Wiki，既方便又省事。</p>
+<p>看板，又一个项目管理组件，可以把项目的开发进度往上面扔。</p>
+<img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/kanban.png" class="">
+<p>除了这些功能，像Github和Gitlab这样的Git服务器都集成了不少项目管理的功能。如果你的团队不太喜欢额外维护一个项目管理软件，不妨考虑一下这些跟Git集成的功能。</p>
+<h3 id="项目主页-个人博客"><a href="#项目主页-个人博客" class="headerlink" title="项目主页/个人博客"></a>项目主页/个人博客</h3><p><a href="https://pages.github.com/" target="_blank" rel="noopener">Github Page</a> 原来是用来做开源项目的介绍页的，后面就像点歪了技能点一样，直接可以作为一个个人博客的托管网站。除了在Github Page上配置自己的博客外，还可以通过像<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a>这样的博客框架，将博客推送到Github。本博客就是使用Hexo搭建的。详细的搭建说明可以在Hexo中的文档找到。</p>
+<h3 id="Git图形化工具"><a href="#Git图形化工具" class="headerlink" title="Git图形化工具"></a>Git图形化工具</h3><p>随着项目的分支越来越多，在命令行中合并分支，修改历史commit变成了一件很抽象的事。辛好，有许多图形化的工具简化操作。</p>
+<h4 id="GitHub-for-Desktop"><a href="#GitHub-for-Desktop" class="headerlink" title="GitHub for Desktop"></a>GitHub for Desktop</h4><p>GitHub官方出的Git GUI工具</p>
+<img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/github-desktop.png" class="">
+<h4 id="SourceTree"><a href="#SourceTree" class="headerlink" title="SourceTree"></a>SourceTree</h4><img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/sourcetree.png" class="">
+<p>同样是ATLASSIAN家，不过跟他的兄弟姐妹不一样，SourceTree可以算得上同类产品中最简洁，使用最方便的产品了。</p>
+<h4 id="IDE"><a href="#IDE" class="headerlink" title="IDE"></a>IDE</h4><img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/vs-git.png" class="">
+<p>在许多IDE上，也会自动集成Git的插件。</p>
+<h4 id="Gitlab-graph"><a href="#Gitlab-graph" class="headerlink" title="Gitlab graph"></a>Gitlab graph</h4><img src="/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/gitlab_tree.png" class="">
+<p>如果你使用的是Gitlab，你还可以在项目页面看到所有的分支历史</p>
+<h3 id="Git修改历史commit"><a href="#Git修改历史commit" class="headerlink" title="Git修改历史commit"></a>Git修改历史commit</h3><p><strong>git filter-branch</strong></p>
+<p>filter-branch 允许你批量的对历史commit进行修改</p>
+<p>例子1:  删除所有历史的密钥文件，防止密钥泄露</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git filter-branch --tree-filter <span class="string">'rm -f key'</span> HEAD</span><br></pre></td></tr></table></figure>
+<p>例子2: 修改字段，换成大写</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git filter-branch -f --msg-filter \</span><br><span class="line"><span class="string">'cat sed "s/update/UPDATE/g"'</span> \</span><br><span class="line">--tag-name-filter cat -- --all</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Devops/" rel="tag"># Devops</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/04/20/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AEAnsible%E7%AF%87/" rel="next" title="成为DevOps工程师-配置Ansible篇">
+                  <i class="fa fa-chevron-left"></i> 成为DevOps工程师-配置Ansible篇
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/10/20/Travis-CI-Build-GithubPage/" rel="prev" title="使用Travis CI构建部署GithubPage">
+                  使用Travis CI构建部署GithubPage <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-图形化教程"><span class="nav-number">1.</span> <span class="nav-text">Git 图形化教程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-工作流"><span class="nav-number">2.</span> <span class="nav-text">Git 工作流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-服务器"><span class="nav-number">3.</span> <span class="nav-text">Git 服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Github"><span class="nav-number">3.1.</span> <span class="nav-text">Github</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gitlab"><span class="nav-number">3.2.</span> <span class="nav-text">Gitlab</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gogs"><span class="nav-number">3.3.</span> <span class="nav-text">Gogs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bitbucket"><span class="nav-number">3.4.</span> <span class="nav-text">Bitbucket</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#码云"><span class="nav-number">3.5.</span> <span class="nav-text">码云</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Issue-Wiki-Kanban"><span class="nav-number">4.</span> <span class="nav-text">Issue, Wiki, Kanban</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目主页-个人博客"><span class="nav-number">5.</span> <span class="nav-text">项目主页/个人博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git图形化工具"><span class="nav-number">6.</span> <span class="nav-text">Git图形化工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GitHub-for-Desktop"><span class="nav-number">6.1.</span> <span class="nav-text">GitHub for Desktop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SourceTree"><span class="nav-number">6.2.</span> <span class="nav-text">SourceTree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IDE"><span class="nav-number">6.3.</span> <span class="nav-text">IDE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gitlab-graph"><span class="nav-number">6.4.</span> <span class="nav-text">Gitlab graph</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git修改历史commit"><span class="nav-number">7.</span> <span class="nav-text">Git修改历史commit</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="RainFD"
+    src="/images/sc2.jpg">
+  <p class="site-author-name" itemprop="name">RainFD</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:rainfd@live.cn" title="E-Mail &amp;rarr; mailto:rainfd@live.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RainFD</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.1
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/muse.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script><script src="/js/algolia-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'f05e3169de9741f17ed8',
+      clientSecret: '454d4119678dcdeaa500428d501728f33901fe9b',
+      repo: 'rainfd.github.io',
+      owner: 'rainfd',
+      admin: ['rainfd'],
+      id: 'd89a067d8b396c16b183cfb94da3eaaa',
+        language: 'zh-CN',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

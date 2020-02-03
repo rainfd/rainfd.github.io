@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+  <meta name="google-site-verification" content="Ggq4vctANgBPr2QFD8E3j_RBUm2T8ZbVjlGZMg4Sres">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Awk 使用教程和使用案例  本文是Awk command tutorial in linux&#x2F;unix with examples and use cases的部分译文">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Awk使用教程">
+<meta property="og:url" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2020&#x2F;02&#x2F;01&#x2F;Awk-Usage&#x2F;index.html">
+<meta property="og:site_name" content="RainFD&#39;s Blog">
+<meta property="og:description" content="Awk 使用教程和使用案例  本文是Awk command tutorial in linux&#x2F;unix with examples and use cases的部分译文">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2020&#x2F;02&#x2F;01&#x2F;Awk-Usage&#x2F;awk.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2020&#x2F;02&#x2F;01&#x2F;Awk-Usage&#x2F;awk-workflow.jpg">
+<meta property="og:updated_time" content="2020-02-03T19:56:27.748Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2020&#x2F;02&#x2F;01&#x2F;Awk-Usage&#x2F;awk.jpg">
+
+<link rel="canonical" href="https://rainfd.github.io/2020/02/01/Awk-Usage/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Awk使用教程 | RainFD's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?77670cc2555d4f085d80e590bdbbccbe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RainFD's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Walking in the Rain</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2020/02/01/Awk-Usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/sc2.jpg">
+      <meta itemprop="name" content="RainFD">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainFD's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Awk使用教程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-01 20:20:42" itemprop="dateCreated datePublished" datetime="2020-02-01T20:20:42+08:00">2020-02-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-04 03:56:27" itemprop="dateModified" datetime="2020-02-04T03:56:27+08:00">2020-02-04</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Awk 使用教程和使用案例</p>
+<img src="/2020/02/01/Awk-Usage/awk.jpg" class="" title="awk">
+<p><em>本文是<a href="https://www.linuxcommands.site/linux-text-processing-commands/linux-awk-command/awk-syntax/" target="_blank" rel="noopener">Awk command tutorial in linux/unix with examples and use cases</a>的部分译文</em><br><a id="more"></a></p>
+<p>[TOC]</p>
+<h1 id="AWK是什么？"><a href="#AWK是什么？" class="headerlink" title="AWK是什么？"></a><strong>AWK是什么？</strong></h1><p><strong>AWK</strong> 是一个处理文本的工具。</p>
+<p>最简单也最常用的用法的就是来获取某些文本的第N列，例如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># file data</span><br><span class="line">1 Tony 18 </span><br><span class="line">2 Jenny 20</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ awk &apos;&#123; print $2 &#125;&apos; data</span><br><span class="line">Tony</span><br><span class="line">Jenny</span><br></pre></td></tr></table></figure>
+<p><strong>AWK</strong> 的命名是取3个发明者Alfred Aho, Peter Weinberger 和Brian Kernighan名字首字母的缩写 。</p>
+<p><strong>AWK</strong> 内置了一种简单的脚本语言来帮助处理数据。这种语言支持变量、函数、用户自定义函数还有很多逻辑操作符。利用这个脚本语言，awk可以实现很多使用的功能</p>
+<h1 id="AWK使用"><a href="#AWK使用" class="headerlink" title="AWK使用"></a><strong>AWK使用</strong></h1><h2 id="基础格式"><a href="#基础格式" class="headerlink" title="基础格式"></a>基础格式</h2><p><code>awk [options] &#39;pattern{ commands } file&#39;</code></p>
+<h2 id="完整格式"><a href="#完整格式" class="headerlink" title="完整格式"></a>完整格式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">awk [-F|-f|-v] &apos;</span><br><span class="line">BEGIN&#123; commands &#125;  </span><br><span class="line">pattern&#123; commands &#125;  </span><br><span class="line">END&#123; commands &#125;&apos; file</span><br></pre></td></tr></table></figure>
+<h2 id="选项"><a href="#选项" class="headerlink" title="选项:"></a>选项:</h2><ul>
+<li><p>-F: 指定分隔符</p>
+<p>-F’[:#|]’: 可以定义多种分隔符</p>
+</li>
+<li><p>-f: 指定脚本</p>
+</li>
+<li><p>-v: 定义变量 var=value</p>
+</li>
+</ul>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p><code>pattern { action }</code></p>
+<p>action类似于其他脚本语言，包含了if for while等基础的关键字</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span>( expression ) statement [ <span class="keyword">else</span> statement ]</span><br><span class="line"><span class="keyword">while</span>( expression ) statement</span><br><span class="line"><span class="keyword">for</span>( expression ; expression ; expression ) statement</span><br><span class="line"><span class="keyword">for</span>( var <span class="keyword">in</span> array ) statement</span><br><span class="line"><span class="keyword">do</span> statement <span class="keyword">while</span>( expression )</span><br><span class="line"><span class="keyword">break</span></span><br><span class="line"><span class="keyword">continue</span></span><br><span class="line">&#123; [ statement ... ] &#125;</span><br><span class="line">expression              <span class="comment"># commonly var = expression</span></span><br><span class="line">print [ expression-list ] [ &gt; expression ]</span><br><span class="line">printf format [ , expression-list ] [ &gt; expression ]</span><br><span class="line">return [ expression ]</span><br><span class="line"><span class="keyword">next</span>                    <span class="comment"># skip remaining patterns on this input line</span></span><br><span class="line"><span class="keyword">nextfile</span>                <span class="comment"># skip rest of this file, open next, start at top</span></span><br><span class="line"><span class="keyword">delete</span> array[ expression ]<span class="comment"># delete an array element</span></span><br><span class="line"><span class="keyword">delete</span> array            <span class="comment"># delete all elements of array</span></span><br><span class="line"><span class="keyword">exit</span> [ expression ]     <span class="comment"># exit immediately; status is expression</span></span><br></pre></td></tr></table></figure>
+<h3 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h3><p>awk支持用户自定义函数，一般放置在BEGIN前</p>
+<p><code>function foo(a, b, c) { ...; return x }</code></p>
+<h2 id="AWK运行流程"><a href="#AWK运行流程" class="headerlink" title="AWK运行流程"></a>AWK运行流程</h2><p>一个awk脚本通常包含3个部分：<strong>BEGIN</strong>，<strong>BODY</strong>和<strong>END</strong>。</p>
+<p>这3个部分都是可选的。</p>
+<img src="/2020/02/01/Awk-Usage/awk-workflow.jpg" class="" title="awk-workflow">
+<ul>
+<li>第1步:  执行BEGIN内的命令;</li>
+<li>第2步: 从stdin或者文件逐行读取一行，然后执行匹配的命令，重复这个过程直到输入结束;</li>
+<li>第3步: 读取文件结束时的时候，就会执行EN块内的命令</li>
+</ul>
+<p><strong>BEGIN</strong> 执行在读取输入之前，一般用来初始化变量和打印输出的表头或者其他辅助信息。</p>
+<p><strong>END</strong> 执行在读取完所有输出之后，可以用来打印一些总结统计类的信息。</p>
+<p><strong>BODY</strong> 包含了常用的命令，是最主要的一块。如果一个awk命令中没有BODY部分，那么BODY会默认通过{print}输出整行的记录。</p>
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><ul>
+<li>$0:  代表全行</li>
+<li>$1: 每行的第1个字段</li>
+<li>NF: 字段的数量</li>
+<li>NR: 当前行数</li>
+<li>FNR:  跟NR类似，不过在处理多个文件的时候，每个文件都会重新计算行数</li>
+<li>FS: 定义分隔符</li>
+<li>RS: 定义每条记录的分割符，默认为每行一条记录</li>
+<li>ARGC: 参数个数</li>
+<li>ARGV: 参数数组</li>
+<li>ENVIRON: 环境变量数组</li>
+<li>OFS: 输出字段分隔符，默认是一个空格</li>
+<li>ORS: 输出记录分隔符，默认是一个换行符</li>
+</ul>
+<h2 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ - * / % ^ ! ++ -- += -= *= /= %= ^= &gt; &gt;= &lt; &lt;= == != ?:</span><br></pre></td></tr></table></figure>
+<ul>
+<li>~: 匹配(包含)，模糊比较</li>
+<li>!~: 不匹配(不包含)，模糊比较</li>
+<li>==: 相等，精确比较</li>
+<li>!=: 不等，精确比较</li>
+</ul>
+<p>这两种匹配的区别就是:</p>
+<ul>
+<li>~ 是包含了某个字符串</li>
+<li>== 是两个字符串是否完全一致</li>
+</ul>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array[index]=value</span><br></pre></td></tr></table></figure>
+<p>数组不需要先声明再使用，而且index可以为任意字符，这点有点类似字典。如果index为字符，需要加上双引号。</p>
+<p>还有awk的数组不支持多维数组，但可以利用index来模拟。留意这里也不需要加双引号。</p>
+<p><code>array[1,1]=0</code></p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>以下的例子为显示/usr/bin目录下的应用的原始文件位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ ls -l /usr/bin | awk &apos;</span><br><span class="line">    BEGIN &#123;</span><br><span class="line">        print &quot;Directory Report&quot;</span><br><span class="line">        print &quot;================&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    NF &gt; 9 &#123;</span><br><span class="line">        print $9, &quot;is a symbolic link to&quot;, $NF</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    END &#123;</span><br><span class="line">        print &quot;=============&quot;</span><br><span class="line">        print &quot;End Of Report&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&apos;</span><br></pre></td></tr></table></figure>
+<p>其中<code>NF &gt; 9</code>代表只有字段数量大于9的行才会执行BODY内的命令。 </p>
+<h2 id="自带函数"><a href="#自带函数" class="headerlink" title="自带函数"></a>自带函数</h2><p>算术函数: exp, log, sqrt, sin, cos, and atan2</p>
+<p>其他自带函数:</p>
+<ul>
+<li>rand: 随机获取0~1之间的小数</li>
+<li>srand: 设置随机种子</li>
+<li>int: 截断数字的整数部分</li>
+<li>substr(string, position, length)/substr(string, position): 取子字符串</li>
+<li>index(s, t): 字符t出现的位置，如果没有返回0</li>
+<li>match(s,r): 匹配r字符串出现的位置</li>
+<li>split(source,des,delimiter): 通过分隔符将字符串切割，存放倒数组des</li>
+<li>sub(r, t, s): 按r匹配到的第一个字符串替换为t，s默认为$0</li>
+<li>gsub(r, t, s): 跟sub类似，替换全部匹配到的字符</li>
+<li>sprintf(fmt, expr, …): 格式化数据写入字符串</li>
+<li>system(cmd): 执行命令，并返回状态码。可以执行其他linux命令</li>
+<li>tolower(str): 返回全小写的字符串</li>
+<li>toupper(str): 返回全大写的字符串</li>
+</ul>
+<h1 id="使用案例"><a href="#使用案例" class="headerlink" title="使用案例"></a><strong>使用案例</strong></h1><h2 id="group-by-count"><a href="#group-by-count" class="headerlink" title="group by count"></a>group by count</h2><p>通常我们使用SQL来实现group by+count来归类统计某类数据，而通过awk也可以轻松实现这个功能。</p>
+<p>示例数据:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id,name,sex</span><br><span class="line">1,Tony,male</span><br><span class="line">2,Jenny,female</span><br><span class="line">3,Jack,male</span><br></pre></td></tr></table></figure>
+<p>统计男女性的人数:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">awk -F, <span class="string">'</span></span><br><span class="line"><span class="string">BEGIN &#123; </span></span><br><span class="line"><span class="string">  print "---------"</span></span><br><span class="line"><span class="string">  print "sex total"</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">NR &gt; 1 &#123;</span></span><br><span class="line"><span class="string">  counter[$3]++</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">END &#123;</span></span><br><span class="line"><span class="string">  print "male: ", counter["male"];</span></span><br><span class="line"><span class="string">  print "female: ", counter["female"]</span></span><br><span class="line"><span class="string">&#125;'</span> data</span><br></pre></td></tr></table></figure>
+<h2 id="匹配一定范围内的文本"><a href="#匹配一定范围内的文本" class="headerlink" title="匹配一定范围内的文本"></a>匹配一定范围内的文本</h2><p>以上述的数据为例，假设这段数据是包含在一个很长的文本中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">UserData</span><br><span class="line">id,name,sex</span><br><span class="line">xxx</span><br><span class="line">final: xxx</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>并且数据前后有明显的标识符，那么我们就可以直接使用字符匹配模式来匹配这段数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/UserData/, /final/ &#123; counter[$3]++ &#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/12/15/Redis-Timeout/" rel="next" title="记一次线上Redis警报">
+                  <i class="fa fa-chevron-left"></i> 记一次线上Redis警报
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AWK是什么？"><span class="nav-number">1.</span> <span class="nav-text">AWK是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AWK使用"><span class="nav-number">2.</span> <span class="nav-text">AWK使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础格式"><span class="nav-number">2.1.</span> <span class="nav-text">基础格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整格式"><span class="nav-number">2.2.</span> <span class="nav-text">完整格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选项"><span class="nav-number">2.3.</span> <span class="nav-text">选项:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语法"><span class="nav-number">2.4.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义函数"><span class="nav-number">2.4.1.</span> <span class="nav-text">自定义函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AWK运行流程"><span class="nav-number">2.5.</span> <span class="nav-text">AWK运行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量"><span class="nav-number">2.6.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作符"><span class="nav-number">2.7.</span> <span class="nav-text">操作符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">2.8.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子"><span class="nav-number">2.9.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自带函数"><span class="nav-number">2.10.</span> <span class="nav-text">自带函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用案例"><span class="nav-number">3.</span> <span class="nav-text">使用案例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#group-by-count"><span class="nav-number">3.1.</span> <span class="nav-text">group by count</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匹配一定范围内的文本"><span class="nav-number">3.2.</span> <span class="nav-text">匹配一定范围内的文本</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="RainFD"
+    src="/images/sc2.jpg">
+  <p class="site-author-name" itemprop="name">RainFD</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:rainfd@live.cn" title="E-Mail &amp;rarr; mailto:rainfd@live.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RainFD</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.1
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/muse.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script><script src="/js/algolia-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'f05e3169de9741f17ed8',
+      clientSecret: '454d4119678dcdeaa500428d501728f33901fe9b',
+      repo: 'rainfd.github.io',
+      owner: 'rainfd',
+      admin: ['rainfd'],
+      id: '684f82485dc409018b796585af154bf2',
+        language: 'zh-CN',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

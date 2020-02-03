@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+  <meta name="google-site-verification" content="Ggq4vctANgBPr2QFD8E3j_RBUm2T8ZbVjlGZMg4Sres">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="在博文How To Become a DevOps Engineer In Six Months or Less中，作者介绍了一条DevOps的学习路线  本系列文章将依据这条路线，因地制宜，介绍各个环节和这些工具的使用。 本文正是第一篇：配置 Terraform篇。">
+<meta name="keywords" content="Devops">
+<meta property="og:type" content="article">
+<meta property="og:title" content="成为DevOps工程师-配置Terraform篇">
+<meta property="og:url" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;index.html">
+<meta property="og:site_name" content="RainFD&#39;s Blog">
+<meta property="og:description" content="在博文How To Become a DevOps Engineer In Six Months or Less中，作者介绍了一条DevOps的学习路线  本系列文章将依据这条路线，因地制宜，介绍各个环节和这些工具的使用。 本文正是第一篇：配置 Terraform篇。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;devops_six_parts.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;providers.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;aliyun-terraform-ecs.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;ram_init.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;ram_key.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;ram_user.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;access.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;%E4%B8%93%E6%9C%89%E7%BD%91%E7%BB%9C.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;instance.png">
+<meta property="og:updated_time" content="2020-02-03T19:56:27.764Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;04&#x2F;07&#x2F;%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87&#x2F;devops_six_parts.png">
+
+<link rel="canonical" href="https://rainfd.github.io/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>成为DevOps工程师-配置Terraform篇 | RainFD's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?77670cc2555d4f085d80e590bdbbccbe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RainFD's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Walking in the Rain</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/sc2.jpg">
+      <meta itemprop="name" content="RainFD">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainFD's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          成为DevOps工程师-配置Terraform篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-07 22:21:05" itemprop="dateCreated datePublished" datetime="2019-04-07T22:21:05+08:00">2019-04-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-04 03:56:27" itemprop="dateModified" datetime="2020-02-04T03:56:27+08:00">2020-02-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88/" itemprop="url" rel="index">
+                    <span itemprop="name">成为DevOps工程师</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在博文<a href="https://medium.com/@devfire/how-to-become-a-devops-engineer-in-six-months-or-less-366097df7737" target="_blank" rel="noopener">How To Become a DevOps Engineer In Six Months or Less</a>中，作者介绍了一条DevOps的学习路线</p>
+<img src="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/devops_six_parts.png" class="">
+<p>本系列文章将依据这条路线，因地制宜，介绍各个环节和这些工具的使用。</p>
+<p>本文正是第一篇：配置 Terraform篇。</p>
+<a id="more"></a>
+<hr>
+<h2 id="Terraform"><a href="#Terraform" class="headerlink" title="Terraform"></a>Terraform</h2><p>如果要用一句话介绍Terrform的话，那这句话就是<strong>INFRASTRUCTURE AS CODE</strong>。如果对基础设施的这个概念很陌生，那么我们看看Terraform支持的基础设施是什么</p>
+<img src="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/providers.png" class="">
+<p>可以看到AWS、Google Cloud Platform、Azure等一众公有云平台和一些其他常见的Pass平台。</p>
+<p>假设一个场景，公司需要你在阿里云上部署一套业务系统。然后你就在阿里云上一个一个的地建资源，LB、ECS、DB。除了这些传统架构上的，可能还有网络控制(SDN)、开发账号控制等等。过几天，公司要求你要在不同的区域再部署一套，那你只能屁颠屁颠地再上控制页面继续点点点。</p>
+<p>为了解决这类问题，<strong>基础设施即代码</strong>这个概念就被提出。通过代码和模板语言来自动化初始基础设施的这一过程，就是Terraform的主要功能。</p>
+<hr>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>直接在<a href="https://www.terraform.io/downloads.html" target="_blank" rel="noopener">下载页面</a>下载对应的二进制压缩包，解压后直接执行就可以了</p>
+<p>如果是Mac OS，可以直接使用Homebrew安装：<code>brew insall terraform</code></p>
+<hr>
+<h2 id="使用教程-Aliyun"><a href="#使用教程-Aliyun" class="headerlink" title="使用教程(Aliyun)"></a>使用教程(Aliyun)</h2><p>在Terraform的官方主页上点击<a href="https://learn.hashicorp.com/terraform/" target="_blank" rel="noopener">Learn</a>就会进入到官方使用教程，不过使用的例子是AWS和Azure。这里为了方便，就使用阿里云。</p>
+<p>另外，在阿里云的官网上也有使用Terraform创建资源的文档</p>
+<p><a href="https://help.aliyun.com/document_detail/91451.html?spm=a2c4g.11186623.2.18.439c92acl7WbtU" target="_blank" rel="noopener">https://help.aliyun.com/document_detail/91451.html?spm=a2c4g.11186623.2.18.439c92acl7WbtU</a> </p>
+<img src="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/aliyun-terraform-ecs.png" class="">
+<p>在文档里面点试用按钮还可以跳到实验平台在线使用命令行操作Terraform。</p>
+<hr>
+<h3 id="Access-Key"><a href="#Access-Key" class="headerlink" title="Access Key"></a>Access Key</h3><p>在使用Terraform操作阿里云之前，需要先在阿里云的控制台创建号用户生成Access Key.<br>生成Access Key有两种途径：</p>
+<ol>
+<li>直接生成，key拥有所有账号所有权限</li>
+<li>创建RAM(Resource Access Management) 用户，通过授权来添加用户的操作权限。<br>两者关系就像Unix系统中的root系统管理员和普通用户。这里推荐使用RAM用户的方式。</li>
+</ol>
+<hr>
+<h4 id="创建RAM用户"><a href="#创建RAM用户" class="headerlink" title="创建RAM用户"></a>创建RAM用户</h4><p>第一次使用RAM功能时需要开通</p>
+<img src="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/ram_init.png" class="">
+<p>创建Terraform RAM角色（人员管理-&gt;用户）,选择编程访问来生成Access Kes</p>
+<img src="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/ram_key.png" class="">
+<p>创建成功后，自动生成Access Key，注意要保存好key，在弹窗关闭后将无法再次获取该信息</p>
+<img src="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/ram_user.png" class="">
+<hr>
+<h4 id="添加权限"><a href="#添加权限" class="headerlink" title="添加权限"></a>添加权限</h4><p>由于是测试的账号，为了方便直接添加最高权限÷</p>
+ <img src="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/access.png" class="">
+<hr>
+<h3 id="tf配置"><a href="#tf配置" class="headerlink" title="tf配置"></a>tf配置</h3><h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>Terraform使用*.tf配置文件来描述资源。Terraform创建资源时会识别当前目录下的所有tf文件。</p>
+<p><em>阿里云 Terraform配置参数说明：<a href="https://www.terraform.io/docs/providers/alicloud/index.html" target="_blank" rel="noopener">https://www.terraform.io/docs/providers/alicloud/index.html</a></em></p>
+<p>现在创建一个example.tf文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Configure the Alicloud Provider</span><br><span class="line">provider &quot;alicloud&quot; &#123;</span><br><span class="line">  access_key = &quot;&lt;your access key&gt;&quot;</span><br><span class="line">  secret_key = &quot;&lt;your secret key&gt;&quot;</span><br><span class="line">  availability_zone = &quot;cn-shenzhen-d&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里是设置刚才创建好的AK。除了直接在配置文件中声明，还可以使用环境变量来声明<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  <span class="built_in">export</span> ALICLOUD_ACCESS_KEY=<span class="string">"LTAIUrZCw3********"</span></span><br><span class="line">➜  <span class="built_in">export</span> ALICLOUD_SECRET_KEY=<span class="string">"zfwwWAMWIAiooj14GQ2*************"</span></span><br><span class="line">➜  <span class="built_in">export</span> ALICLOUD_REGION=<span class="string">"cn-beijing"</span></span><br></pre></td></tr></table></figure><br>使用环境变量声明就可以用不同的系统用户来区分操作的阿里云账号</p>
+<p>接下来执行初始化，terraform自动下载阿里云的provider插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">➜  aliyun terraform init</span><br><span class="line"></span><br><span class="line">Initializing provider plugins...</span><br><span class="line">- Checking <span class="keyword">for</span> available provider plugins on https://releases.hashicorp.com...</span><br><span class="line"></span><br><span class="line">Error installing provider <span class="string">"alicloud"</span>: Get https://releases.hashicorp.com/terraform-provider-alicloud/: EOF.</span><br><span class="line"></span><br><span class="line">Terraform analyses the configuration and state and automatically downloads</span><br><span class="line">plugins <span class="keyword">for</span> the providers used. However, when attempting to download this</span><br><span class="line">plugin an unexpected error occured.</span><br><span class="line"></span><br><span class="line">This may be caused <span class="keyword">if</span> <span class="keyword">for</span> some reason Terraform is unable to reach the</span><br><span class="line">plugin repository. The repository may be unreachable <span class="keyword">if</span> access is blocked</span><br><span class="line">by a firewall.</span><br><span class="line"></span><br><span class="line">If automatic installation is not possible or desirable <span class="keyword">in</span> your environment,</span><br><span class="line">you may alternatively manually install plugins by downloading a suitable</span><br><span class="line">distribution package and placing the plugin<span class="string">'s executable file in the</span></span><br><span class="line"><span class="string">following directory:</span></span><br><span class="line"><span class="string">    terraform.d/plugins/darwin_amd64</span></span><br></pre></td></tr></table></figure>
+<p>当由于防火墙 或者其他网络原因下载失败时，会提示到release地址下载对应平台的插件。</p>
+<p>插件安装地址</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Operating system</th>
+<th>User plugins directory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows</td>
+<td><code>%APPDATA%\terraform.d\plugins</code></td>
+</tr>
+<tr>
+<td>All other systems</td>
+<td><code>~/.terraform.d/plugins</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Windows:     %APPDATA%\terraform.d\plugins</span></span><br><span class="line"><span class="comment"># Linux&amp;Macos: ~/.terraform.d/plugins</span></span><br><span class="line">mkdir -p ~/.terraform.d/plugins/darwin_amd64</span><br><span class="line">wget https://releases.hashicorp.com/terraform-provider-alicloud/1.34.0/terraform-provider-alicloud_1.34.0_darwin_amd64.zip</span><br><span class="line">unzip terraform-provider-alicloud_1.34.0_darwin_amd64.zip</span><br></pre></td></tr></table></figure>
+<p>重新初始化，安装成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">➜  terraform init</span><br><span class="line"></span><br><span class="line">Initializing provider plugins...</span><br><span class="line"></span><br><span class="line">The following providers <span class="keyword">do</span> not have any version constraints <span class="keyword">in</span> configuration,</span><br><span class="line">so the latest version was installed.</span><br><span class="line"></span><br><span class="line">To prevent automatic upgrades to new major versions that may contain breaking</span><br><span class="line">changes, it is recommended to add version = <span class="string">"..."</span> constraints to the</span><br><span class="line">corresponding provider blocks <span class="keyword">in</span> configuration, with the constraint strings</span><br><span class="line">suggested below.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* provider.alicloud: version = <span class="string">"~&gt; 1.34"</span></span><br><span class="line"></span><br><span class="line">Terraform has been successfully initialized!</span><br><span class="line"></span><br><span class="line">You may now begin working with Terraform. Try running <span class="string">"terraform plan"</span> to see</span><br><span class="line">any changes that are required <span class="keyword">for</span> your infrastructure. All Terraform commands</span><br><span class="line">should now work.</span><br><span class="line"></span><br><span class="line">If you ever <span class="built_in">set</span> or change modules or backend configuration <span class="keyword">for</span> Terraform,</span><br><span class="line">rerun this <span class="built_in">command</span> to reinitialize your working directory. If you forget, other</span><br><span class="line">commands will detect it and remind you to <span class="keyword">do</span> so <span class="keyword">if</span> necessary.</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="创建资源"><a href="#创建资源" class="headerlink" title="创建资源"></a>创建资源</h3><h4 id="资源文档"><a href="#资源文档" class="headerlink" title="资源文档"></a>资源文档</h4><p>Terraform aliyun插件参数文档</p>
+<p><a href="https://www.terraform.io/docs/providers/alicloud/r/instance.html" target="_blank" rel="noopener">https://www.terraform.io/docs/providers/alicloud/r/instance.html</a></p>
+<hr>
+<h4 id="专用网络和交换机"><a href="#专用网络和交换机" class="headerlink" title="专用网络和交换机"></a>专用网络和交换机</h4><p><strong>专有网络VPC</strong>(Virtual Private Cloud):  基于阿里云构建的一个隔离的网络环境，专有网络之间逻辑上彻底隔离。</p>
+<p>每个VPC都有一个路由器和至少一个交换机(VSW Virtual Switch)。交换机连接不同云产品，路由器连接不同可用区。这样一个VPC就可以管理一片独立的网络。</p>
+<img src="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/%E4%B8%93%E6%9C%89%E7%BD%91%E7%BB%9C.png" class="">
+<p>接下来在example.tf中添加vpc和vsw资源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#  data_type name</span><br><span class="line">resource &quot;alicloud_vpc&quot; &quot;vpc&quot; &#123;</span><br><span class="line">  name       = &quot;tf_test_foo&quot;</span><br><span class="line">  cidr_block = &quot;172.16.0.0/12&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource &quot;alicloud_vswitch&quot; &quot;vsw&quot; &#123;</span><br><span class="line">  vpc_id            = &quot;$&#123;alicloud_vpc.vpc.id&#125;&quot;</span><br><span class="line">  cidr_block        = &quot;172.16.0.0/21&quot;</span><br><span class="line">  availability_zone = &quot;cn-shenzhen-e&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行<code>terraform apply</code>来创建资源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">➜  terraform apply</span><br><span class="line">alicloud_vpc.vpc: Refreshing state... (ID: vpc-wz9974l8ryiwe8l9w582s)</span><br><span class="line">alicloud_vswitch.vsw: Refreshing state... (ID: vsw-wz9knct0w23uwkzvq2s1n)</span><br><span class="line"></span><br><span class="line">Apply complete! Resources: 0 added, 0 changed, 0 destroyed.</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="安全组和安全规则"><a href="#安全组和安全规则" class="headerlink" title="安全组和安全规则"></a>安全组和安全规则</h4><p>安全组控制着ECS实例的网络访问，一个安全组包含多个安全规则。可设置多个安全组，通过设置优先级来组合使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">resource &quot;alicloud_security_group&quot; &quot;default&quot; &#123;</span><br><span class="line">  name = &quot;default&quot;</span><br><span class="line">  vpc_id = &quot;$&#123;alicloud_vpc.vpc.id&#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource &quot;alicloud_security_group_rule&quot; &quot;allow_all_tcp&quot; &#123;</span><br><span class="line">  type              = &quot;ingress&quot;                               # ingress (inbound) or egress (outbound). 规则方向：</span><br><span class="line">                                                              # 出方向：是指 ECS 实例访问内网中其他 ECS 实例或者公网上的资源</span><br><span class="line">                                                              # 入方向：是指内网中的其他 ECS 实例或公网上的资源访问 ECS 实例</span><br><span class="line">  ip_protocol       = &quot;tcp&quot;</span><br><span class="line">  # nic_type          = &quot;intranet&quot;                              # internet connection</span><br><span class="line">  policy            = &quot;accept&quot;                                # 说明 这里的 拒绝策略是直接丢弃数据包，不给任何回应信息。如果 2 个安全组规则其他都相同只有授权策略不同，则 拒绝授权生效， 接受授权不生效。</span><br><span class="line">  port_range        = &quot;1/65535&quot;                               # from 1 to 65535</span><br><span class="line">  priority          = 1                                       # the highest priority</span><br><span class="line">  security_group_id = &quot;$&#123;alicloud_security_group.default.id&#125;&quot;</span><br><span class="line">  cidr_ip           = &quot;0.0.0.0/0&quot;                             # all ip address access</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>在VPC安全组的nic_type网卡类型的默认值是intranet，而且也只能选择intranet，不能选择internet。这也意味着VPC内的ECS实例不能直接访问公网。</em></p>
+<hr>
+<h4 id="ECS实例"><a href="#ECS实例" class="headerlink" title="ECS实例"></a>ECS实例</h4><p>添加ECS实例</p>
+<p><em>1. 留意所在区域有没有对应的实例</em></p>
+<p><em>2. 镜像地址：<a href="https://ecs.console.aliyun.com/#/image/region/cn-hangzhou/systemImageList" target="_blank" rel="noopener">https://ecs.console.aliyun.com/#/image/region/cn-hangzhou/systemImageList</a></em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">resource &quot;alicloud_instance&quot; &quot;instance&quot; &#123;</span><br><span class="line">  # cn-beijing</span><br><span class="line">  availability_zone = &quot;cn-beijing-b&quot;</span><br><span class="line">  security_groups = [&quot;$&#123;alicloud_security_group.default.*.id&#125;&quot;]</span><br><span class="line"></span><br><span class="line">  # series III</span><br><span class="line">  instance_type        = &quot;ecs.n2.small&quot;</span><br><span class="line">  system_disk_category = &quot;cloud_efficiency&quot;</span><br><span class="line">  image_id             = &quot;ubuntu_140405_64_40G_cloudinit_20161115.vhd&quot;</span><br><span class="line">  instance_name        = &quot;test_foo&quot;</span><br><span class="line">  vswitch_id = &quot;$&#123;alicloud_vswitch.vsw.id&#125;&quot;</span><br><span class="line">  internet_max_bandwidth_out = 10</span><br><span class="line">  password = &quot;&lt;replace_with_your_password&gt;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一般使用新的账号会创建失败，提示没有足够余额</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Error: Error applying plan:</span><br><span class="line"></span><br><span class="line">1 error(s) occurred:</span><br><span class="line"></span><br><span class="line">* alicloud_instance.instance: 1 error(s) occurred:</span><br><span class="line"></span><br><span class="line">* alicloud_instance.instance: Error creating Aliyun ecs instance: &amp;errors.ServerError&#123;httpStatus:403, requestId:<span class="string">"CA1B42FE-A5F9-4323-932F-B2C863C7AB16"</span>, hostId:<span class="string">"ecs-cn-hangzhou.aliyuncs.com"</span>, errorCode:<span class="string">"InvalidAccountStatus.NotEnoughBalance"</span>, recommend:<span class="string">""</span>, message:<span class="string">"Your account does not have enough balance."</span>, comment:<span class="string">""</span>&#125;</span><br><span class="line"></span><br><span class="line">Terraform does not automatically rollback <span class="keyword">in</span> the face of errors.</span><br><span class="line">Instead, your Terraform state file has been partially updated with</span><br><span class="line">any resources that successfully completed. Please address the error</span><br><span class="line">above and apply again to incrementally change your infrastructure.</span><br></pre></td></tr></table></figure>
+<p>需要往阿里云的账号至少充值100块（默认为按量付费，而按量付费需要账户余额至少100块），再接着创建</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Apply complete! Resources: 1 added, 0 changed, 0 destroyed.</span><br></pre></td></tr></table></figure>
+<p>看到创建成功后，登陆阿里云控制台就可以看到该实例</p>
+<img src="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/instance.png" class="">
+<p>注意在测试完后，使用<code>terraform destory</code>销毁所有资源来避免资源消耗产生的费用。</p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>到这里，我们已经通过Terraform来创建云产品。而在实际工作中，还要配合更多的实用的功能，例如Datasource，允许我们描述一个ECS实例的要求，来自动选择可用区、镜像、实例类型等。但我们已经了解了Terraform的核心功能，这里就点到即止了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Devops/" rel="tag"># Devops</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/04/20/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AEAnsible%E7%AF%87/" rel="prev" title="成为DevOps工程师-配置Ansible篇">
+                  成为DevOps工程师-配置Ansible篇 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Terraform"><span class="nav-number">1.</span> <span class="nav-text">Terraform</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用教程-Aliyun"><span class="nav-number">3.</span> <span class="nav-text">使用教程(Aliyun)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Access-Key"><span class="nav-number">3.1.</span> <span class="nav-text">Access Key</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建RAM用户"><span class="nav-number">3.1.1.</span> <span class="nav-text">创建RAM用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加权限"><span class="nav-number">3.1.2.</span> <span class="nav-text">添加权限</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tf配置"><span class="nav-number">3.2.</span> <span class="nav-text">tf配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化"><span class="nav-number">3.2.1.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建资源"><span class="nav-number">3.3.</span> <span class="nav-text">创建资源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#资源文档"><span class="nav-number">3.3.1.</span> <span class="nav-text">资源文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#专用网络和交换机"><span class="nav-number">3.3.2.</span> <span class="nav-text">专用网络和交换机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安全组和安全规则"><span class="nav-number">3.3.3.</span> <span class="nav-text">安全组和安全规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ECS实例"><span class="nav-number">3.3.4.</span> <span class="nav-text">ECS实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="RainFD"
+    src="/images/sc2.jpg">
+  <p class="site-author-name" itemprop="name">RainFD</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:rainfd@live.cn" title="E-Mail &amp;rarr; mailto:rainfd@live.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RainFD</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.1
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/muse.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script><script src="/js/algolia-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'f05e3169de9741f17ed8',
+      clientSecret: '454d4119678dcdeaa500428d501728f33901fe9b',
+      repo: 'rainfd.github.io',
+      owner: 'rainfd',
+      admin: ['rainfd'],
+      id: '935c4231e2ba5e9fedb6c3cdd6230bd2',
+        language: 'zh-CN',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
