@@ -11,11 +11,15 @@ script:
   - hexo generate # generate static files
   - hexo algolia  
 deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GH_TOKEN
-  keep-history: true
-  on:
-    branch: source
-  target_branch: master
-  local-dir: public
+  - provider: pages
+    skip-cleanup: true
+    github-token: $GH_TOKEN
+    keep-history: true
+    on:
+      branch: source
+    target_branch: master
+    local-dir: public
+  - provider: heroku
+    api_key:
+      secure: $HEROKU_API_KEY
+    app: rainfd-blog
