@@ -90,7 +90,6 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
 
 #algolia:
 #applicationID: '34LIFT72X3'
