@@ -19,9 +19,10 @@ deploy:
       branch: source
     target_branch: master
     local-dir: public
-  - provider: heroku:git
+  - provider: heroku
     # api_key:
     # secure: $HEROKU_API_KEY
+    edge: true
     username: $HEROKU_USERNAME
     password: $HEROKU_PASSWORD
     app: rainfd
