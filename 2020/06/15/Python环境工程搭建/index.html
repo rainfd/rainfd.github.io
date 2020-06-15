@@ -52,18 +52,18 @@
   };
 </script>
 
-  <meta name="description" content="线上容器被驱逐引出的一系列问题。">
-<meta name="keywords" content="kubernetes">
+  <meta name="description" content="之前一直在线上服务器裸敲Python，很久没有在自己的mac上写了。最近有任务要用Python来实现，借此好好整理关于Python环境设置和工程搭建遇到的问题。">
+<meta name="keywords" content="python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="记一次线上K8s临时存储与驱逐的问题">
-<meta property="og:url" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2019&#x2F;10&#x2F;31&#x2F;K8s-Disk-Resource-Consumption&#x2F;index.html">
+<meta property="og:title" content="Python环境&amp;工程搭建">
+<meta property="og:url" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2020&#x2F;06&#x2F;15&#x2F;Python%E7%8E%AF%E5%A2%83%E5%B7%A5%E7%A8%8B%E6%90%AD%E5%BB%BA&#x2F;index.html">
 <meta property="og:site_name" content="RainFD&#39;s Blog">
-<meta property="og:description" content="线上容器被驱逐引出的一系列问题。">
+<meta property="og:description" content="之前一直在线上服务器裸敲Python，很久没有在自己的mac上写了。最近有任务要用Python来实现，借此好好整理关于Python环境设置和工程搭建遇到的问题。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2020-06-15T04:10:13.904Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://rainfd.github.io/2019/10/31/K8s-Disk-Resource-Consumption/">
+<link rel="canonical" href="https://rainfd.github.io/2020/06/15/Python%E7%8E%AF%E5%A2%83%E5%B7%A5%E7%A8%8B%E6%90%AD%E5%BB%BA/">
 
 
 <script id="page-configurations">
@@ -77,7 +77,7 @@
   };
 </script>
 
-  <title>记一次线上K8s临时存储与驱逐的问题 | RainFD's Blog</title>
+  <title>Python环境&工程搭建 | RainFD's Blog</title>
   
 
 
@@ -230,7 +230,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2019/10/31/K8s-Disk-Resource-Consumption/">
+    <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2020/06/15/Python%E7%8E%AF%E5%A2%83%E5%B7%A5%E7%A8%8B%E6%90%AD%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/sc2.jpg">
@@ -243,7 +243,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          记一次线上K8s临时存储与驱逐的问题
+          Python环境&工程搭建
         </h1>
 
         <div class="post-meta">
@@ -252,26 +252,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2019-10-31 15:32:12" itemprop="dateCreated datePublished" datetime="2019-10-31T15:32:12+08:00">2019-10-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-15 12:10:13" itemprop="dateModified" datetime="2020-06-15T12:10:13+08:00">2020-06-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/" itemprop="url" rel="index">
-                    <span itemprop="name">疑难杂症</span>
-                  </a>
-                </span>
+              <time title="创建时间：2020-06-15 11:55:05 / 修改时间：12:10:13" itemprop="dateCreated datePublished" datetime="2020-06-15T11:55:05+08:00">2020-06-15</time>
             </span>
 
           
@@ -292,54 +275,27 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>线上容器被驱逐引出的一系列问题。</p>
+        <p>之前一直在线上服务器裸敲Python，很久没有在自己的mac上写了。最近有任务要用Python来实现，借此好好整理关于Python环境设置和工程搭建遇到的问题。</p>
 <a id="more"></a>
-<h2 id="问题症状"><a href="#问题症状" class="headerlink" title="问题症状"></a>问题症状</h2><p>线上平台是Openshift3，应用昨天刚上线，今天就收到警报 ，系统提示一个应用大量的实例在短时间不断重启。这个应用是ETL相关的应用，部署了几十个实例。到了现场，在监控界面发现了大量状态为Evited的容器。查看Pod的事件，其类型有两种：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The node was low on resource: ephemeral-storage. Container xxx was using 217277240Ki, which exceeds its request of 0.</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The node had condition: [DiskPressure].</span><br></pre></td></tr></table></figure>
-<p>事件提示磁盘资源紧张，看了其他应用都显示正常，那么可以初步判定是该应用有写入大量的文件把磁盘占满了。</p>
-<h2 id="问题追寻-amp-amp-尝试解决"><a href="#问题追寻-amp-amp-尝试解决" class="headerlink" title="问题追寻&amp;&amp;尝试解决"></a>问题追寻&amp;&amp;尝试解决</h2><p>初步判定后，先直接进入了容器内部，看了一下现在磁盘占用情况。发现应用不仅把日志输出到标准输出，还把日志输出的本地。容器10G临时空间全被占满了。</p>
-<blockquote>
-<p>注：1. 平台采用filebeat+ELK的日志采集方案，规定应用日志输出到标准输出。</p>
-</blockquote>
-<p>初步判定后，先看了这个应用的日志，发现监控平台上显示的日志时间有些滞后。平台上的日志为日志采集后的结果。再看日志量，峰值近400w/min。回来重看日志，发现基本都是DEBUG，那么现在就可以确定是应用的日志级别太低，日志量太大导致的磁盘空间不足。</p>
-<p>找到问题后，立即联系开发人员，得知因应用的特殊性，线上的DEBUG级别要保留。但不是所有日志都需要DEBUG级别，他们在logback中调整了部分组件的日志级别。经过一段时间观察候，日志量降到了200w/min，应用不再驱逐重启了。此时监控界面显示着大量之前被驱逐的容器，只能让管理员手动删除。</p>
-<blockquote>
-<p>注： 容器平台为合作方的基础设施，我们无权查看任何机器信息。</p>
-</blockquote>
-<p>几天后，回到线上发现容器驱逐现象只是降低了频率。我们讨论了解决方案，决定暂时申请使用PVC来滚动存储近期DEBUG级别的日志，标准输出输出INFO级别的日志，此时问题还没有彻底根治。</p>
-<p>最后，应用业务上趋于稳定，把全部的日志级别调为INFO，容器驱逐不再发生。</p>
-<h2 id="问题回顾"><a href="#问题回顾" class="headerlink" title="问题回顾"></a>问题回顾</h2><h3 id="使用了PVC后为什么还没有彻底解决问题？"><a href="#使用了PVC后为什么还没有彻底解决问题？" class="headerlink" title="使用了PVC后为什么还没有彻底解决问题？"></a>使用了PVC后为什么还没有彻底解决问题？</h3><p>我们来分析有什么东西可能会导致磁盘占满？</p>
-<h4 id="1-docker日志"><a href="#1-docker日志" class="headerlink" title="1. docker日志"></a>1. docker日志</h4><p>docker默认使用json-logger-driver，容器标准输出的日志会落到磁盘</p>
-<p>在主机<code>/var/log/pods/$(pod-name)/$(container-name)/</code>可以看到容器日志</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;log&quot;:&quot;2019-11-28 13:35:30,749 WARN  akka.remote.ReliableDeliverySupervisor                        - Association with remote system [akka.tcp://flink@flink-taskmanager-754bb4f48-xw8cb:6122] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@flink-taskmanager-754bb4f48-xw8cb:6122]] Caused by: [flink-taskmanager-754bb4f48-xw8cb]\n&quot;,&quot;stream&quot;:&quot;stdout&quot;,&quot;time&quot;:&quot;2019-11-28T13:35:31.26009921Z&quot;&#125;</span><br><span class="line">&#123;&quot;log&quot;:&quot;2019-11-28 13:35:41,065 INFO  org.apache.flink.runtime.resourcemanager.StandaloneResourceManager  - The heartbeat of TaskManager with id d1b3771c4b71910cc323f0c61759f908 timed out.\n&quot;,&quot;stream&quot;:&quot;stdout&quot;,&quot;time&quot;:&quot;2019-11-28T13:35:41.265769985Z&quot;&#125;</span><br></pre></td></tr></table></figure>
-<p>在daemon.js的配置文件中可以设置这个日志大小</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;log-driver&quot;: &quot;json-file&quot;,</span><br><span class="line">    &quot;log-opts&quot;: &#123;</span><br><span class="line">        &quot;max-size&quot;: &quot;100m&quot;, # Max size of the log files.</span><br><span class="line">        &quot;max-file&quot;: &quot;5&quot; # The maximum number of log files that can be present.</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2-容器镜像"><a href="#2-容器镜像" class="headerlink" title="2. 容器镜像"></a>2. <del>容器镜像</del></h4><p>在本地的开发环境经常会遇到docker镜像占用了大量空间，但在kubernetes中不一样。kubelet默认每分钟进行容器GC和每5分钟进行镜像GC。</p>
-<h4 id="3-PVC缓存"><a href="#3-PVC缓存" class="headerlink" title="3. PVC缓存"></a>3. <del>PVC缓存</del></h4><p>平台PVC只有一种资源类型：GlusterFS，而GlusterFS只有只读缓存。应用不断写入日志，没有读文件的操作。所以可以排除一个因素的影响。</p>
-<ul>
-<li>docker logger driver / stdout</li>
-<li>PVC gluster fs 本地缓存</li>
-<li>主机磁盘资源紧张(镜像占用空间，k8s管理镜像策略)</li>
-</ul>
-<h3 id="磁盘资源紧张。为什么只有这一个应用发生驱逐？"><a href="#磁盘资源紧张。为什么只有这一个应用发生驱逐？" class="headerlink" title="磁盘资源紧张。为什么只有这一个应用发生驱逐？"></a>磁盘资源紧张。为什么只有这一个应用发生驱逐？</h3><p>Kubernetes存在两种驱逐阈值（threshold）。</p>
-<h4 id="1-软阈值"><a href="#1-软阈值" class="headerlink" title="1. 软阈值"></a>1. 软阈值</h4><p>应用定义的阈值。例如limit cpu: 400m。而在K8s 1.15+版本中才加入了支持对ephemeral-storage设置软阈值。</p>
-<h4 id="2-硬件阈值"><a href="#2-硬件阈值" class="headerlink" title="2. 硬件阈值"></a>2. 硬件阈值</h4><p>根据主机的配置的阈值。例如nodefs.available低于20%。</p>
-<p>在这个例子中，当磁盘资源紧张，nodefs.available低于阈值，触发了驱逐。</p>
-<p>kubelet会对Pod中所有容器当前local volumes和日志所占用的容量来排序，优先驱逐占用磁盘多的Pod。</p>
-<h3 id="有没有其他的解决方法？"><a href="#有没有其他的解决方法？" class="headerlink" title="有没有其他的解决方法？"></a>有没有其他的解决方法？</h3><h4 id="1-hostPath"><a href="#1-hostPath" class="headerlink" title="1. hostPath"></a>1. hostPath</h4><p>如果只是临时应急，可以把应用部署到特定几台磁盘大的机器，通过hostPath把主机目录挂到应用上来快速解决。</p>
-<h4 id="2-加大集群日志吞吐"><a href="#2-加大集群日志吞吐" class="headerlink" title="2. 加大集群日志吞吐"></a>2. 加大集群日志吞吐</h4><p>如果应用长期需要输出大量日志，则需要考虑当前日志采集的方式是否能从SideCar改用为DaemonSet集中采集。</p>
-<p>如果使用的是ELK方案，还需考虑Logstash和Kafka的配置，是否需要调整。</p>
-<h4 id="3-PVC"><a href="#3-PVC" class="headerlink" title="3. PVC"></a>3. PVC</h4><p>当然日志直接输出到PVC还是最简单粗暴的办法。</p>
-<p><strong>参考资料</strong></p>
-<p><a href="https://docs.docker.com/config/containers/logging/configure/" target="_blank" rel="noopener">logging drivers</a></p>
-<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#eviction-policy" target="_blank" rel="noopener">Evited Policy</a></p>
-<p><a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#local-ephemeral-storage" target="_blank" rel="noopener">Local ephemeral storage</a></p>
-<p><a href="https://kubernetes.io/docs/concepts/cluster-administration/kubelet-garbage-collection/" target="_blank" rel="noopener">Kubelet garbage collection</a></p>
-<p><a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/" target="_blank" rel="noopener">Manager compute resource container</a></p>
-<p><a href="https://www.cnblogs.com/cocowool/p/Docker_Kubernetes_Log_Location.html" target="_blank" rel="noopener">谈一下Docker与Kubernetes集群的日志和日志管理</a></p>
-<p><a href="https://cloud.tencent.com/developer/article/1456389" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1456389</a></p>
-
+<p>示例工程地址: <a href="https://github.com/rainfd/python-example-project" target="_blank" rel="noopener">https://github.com/rainfd/python-example-project</a></p>
+<h2 id="ENVIROMMENT"><a href="#ENVIROMMENT" class="headerlink" title="ENVIROMMENT"></a>ENVIROMMENT</h2><h3 id="安装-Python"><a href="#安装-Python" class="headerlink" title="安装 Python"></a>安装 Python</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install python</span><br></pre></td></tr></table></figure>
+<p>安装 Python2/3,虽然在今年官方就正式停止了对 Python2 的支持,但已经在线上运行的系统还是默认跑着 Python2. 像 Centos7.6 才会默认使用 Python3, 那在近几年内 Python2 还是避不开了.</p>
+<h3 id="IDE"><a href="#IDE" class="headerlink" title="IDE"></a>IDE</h3><p>不是用 Python 作为主力语言,那么买 Pycharm 就没什么必要了. 在其余的几个常用 IDE 中(VSCode/Sublime Text3/Atom), 我选了 VSCode.原因是我 Golang 也是在 VSCode 上开发的.配置 Python 相关的环境也不需要折腾什么.</p>
+<h4 id="安装-Python-插件"><a href="#安装-Python-插件" class="headerlink" title="安装 Python 插件"></a>安装 Python 插件</h4><p>在 marketplace 搜索 Python 的官方插件直接安装</p>
+<h3 id="pipenv"><a href="#pipenv" class="headerlink" title="pipenv"></a><a href="https://pipenv.pypa.io/" target="_blank" rel="noopener">pipenv</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install pipenv</span><br></pre></td></tr></table></figure>
+<p>相对比于 pyenv,个人认为 pipenv 安装和使用更简单，还有完整的文档.</p>
+<h4 id="新建虚拟环境"><a href="#新建虚拟环境" class="headerlink" title="新建虚拟环境"></a>新建虚拟环境</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> python-example-project</span><br><span class="line">$ pipenv --three</span><br><span class="line"></span><br><span class="line">$ pipenv shell</span><br><span class="line">(python-example-project) $ pipenv install package</span><br><span class="line"></span><br><span class="line">(python-example-project) $ pipenv --venv</span><br><span class="line">/Users/rainfd/.<span class="built_in">local</span>/share/virtualenvs/python-example-project-9IUo4aoR</span><br></pre></td></tr></table></figure>
+<h4 id="VSCode-配置虚拟环境"><a href="#VSCode-配置虚拟环境" class="headerlink" title="VSCode 配置虚拟环境"></a>VSCode 配置虚拟环境</h4><p>按下 <code>⇧⌘P/F1</code>, 输入 <code>select interpreter</code> 选择上面 venv 列出的路径.<br>又或者在 workspace 的 setting 中添加:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"python.pythonPath"</span>: <span class="string">"/Users/rainfd/.local/share/virtualenvs/python-example-project-9IUo4aoR/bin/python"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Shebang"><a href="#Shebang" class="headerlink" title="Shebang"></a>Shebang</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br></pre></td></tr></table></figure>
+<p>通常 Python 文件开头会加入 Shebang 或者其他作者/注释说明, 这里就要使用 VSCode 自带的 Snippet.菜单栏选择 Preferences&gt;Use Snippets, 输入 python.json, 输入</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"HEADER"</span>: &#123;</span><br><span class="line">    <span class="attr">"prefix"</span>: <span class="string">"header"</span>,</span><br><span class="line">    <span class="attr">"body"</span>: [<span class="string">"#!/usr/bin/env python"</span>, <span class="string">"# -*- encoding: utf-8 -*-"</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="PROJECT"><a href="#PROJECT" class="headerlink" title="PROJECT"></a>PROJECT</h2><h3 id="Unit-Test"><a href="#Unit-Test" class="headerlink" title="Unit Test"></a>Unit Test</h3><p>Python 用于单元测试的框架有很多,但 Python 官方库就自带了一个不错的 unittest,那就没必要引入其他依赖了.</p>
+<h4 id="VSCode-配置-unittest"><a href="#VSCode-配置-unittest" class="headerlink" title="VSCode 配置 unittest"></a>VSCode 配置 unittest</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"python.testing.unittestArgs"</span>: [<span class="string">"-v"</span>, <span class="string">"-s"</span>, <span class="string">"."</span>, <span class="string">"-p"</span>, <span class="string">"*_test.py"</span>],</span><br><span class="line">  <span class="attr">"python.testing.pytestEnabled"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">"python.testing.nosetestsEnabled"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">"python.testing.unittestEnabled"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Mock"><a href="#Mock" class="headerlink" title="Mock"></a>Mock</h5><p>既然使用了 unittest, 那就少不了 unittest.mock 相对于其他语言的 mock 支持, 我是觉得 Python 的 mock 使用是最简单的.<br>要注意的是 unitest.mock 是 Python 3.3 加入到官方库的，假设使用 Python2，就需要额外安装 <code>pipenv install mock</code></p>
+<h3 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h3><p>全局日志可以参考这个<code>https://gist.github.com/kingspp/9451566a5555fb022215ca2b7b802f19</code><br>通过 yaml 配置各个模块的日志格式和等级</p>
+<p>在模块中只需要引入 logger 就可以正常输出日志</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line">logger.info(<span class="string">"msg"</span>)</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -348,24 +304,21 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/kubernetes/" rel="tag"># kubernetes</a>
+              <a href="/tags/python/" rel="tag"># python</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/2019/10/20/Travis-CI-Build-GithubPage/" rel="next" title="使用Travis CI构建部署GithubPage">
-                  <i class="fa fa-chevron-left"></i> 使用Travis CI构建部署GithubPage
+                <a href="/2020/04/02/K8sDNS/" rel="next" title="K8sDNS 和 CoreDNS">
+                  <i class="fa fa-chevron-left"></i> K8sDNS 和 CoreDNS
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/12/15/Redis-Timeout/" rel="prev" title="记一次线上Redis警报">
-                  记一次线上Redis警报 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
       </footer>
@@ -405,7 +358,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题症状"><span class="nav-number">1.</span> <span class="nav-text">问题症状</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题追寻-amp-amp-尝试解决"><span class="nav-number">2.</span> <span class="nav-text">问题追寻&amp;&amp;尝试解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题回顾"><span class="nav-number">3.</span> <span class="nav-text">问题回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用了PVC后为什么还没有彻底解决问题？"><span class="nav-number">3.1.</span> <span class="nav-text">使用了PVC后为什么还没有彻底解决问题？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-docker日志"><span class="nav-number">3.1.1.</span> <span class="nav-text">1. docker日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-容器镜像"><span class="nav-number">3.1.2.</span> <span class="nav-text">2. 容器镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-PVC缓存"><span class="nav-number">3.1.3.</span> <span class="nav-text">3. PVC缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#磁盘资源紧张。为什么只有这一个应用发生驱逐？"><span class="nav-number">3.2.</span> <span class="nav-text">磁盘资源紧张。为什么只有这一个应用发生驱逐？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-软阈值"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 软阈值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-硬件阈值"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. 硬件阈值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有没有其他的解决方法？"><span class="nav-number">3.3.</span> <span class="nav-text">有没有其他的解决方法？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-hostPath"><span class="nav-number">3.3.1.</span> <span class="nav-text">1. hostPath</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-加大集群日志吞吐"><span class="nav-number">3.3.2.</span> <span class="nav-text">2. 加大集群日志吞吐</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-PVC"><span class="nav-number">3.3.3.</span> <span class="nav-text">3. PVC</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ENVIROMMENT"><span class="nav-number">1.</span> <span class="nav-text">ENVIROMMENT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-Python"><span class="nav-number">1.1.</span> <span class="nav-text">安装 Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IDE"><span class="nav-number">1.2.</span> <span class="nav-text">IDE</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-Python-插件"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装 Python 插件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pipenv"><span class="nav-number">1.3.</span> <span class="nav-text">pipenv</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#新建虚拟环境"><span class="nav-number">1.3.1.</span> <span class="nav-text">新建虚拟环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VSCode-配置虚拟环境"><span class="nav-number">1.3.2.</span> <span class="nav-text">VSCode 配置虚拟环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shebang"><span class="nav-number">1.3.3.</span> <span class="nav-text">Shebang</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PROJECT"><span class="nav-number">2.</span> <span class="nav-text">PROJECT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Unit-Test"><span class="nav-number">2.1.</span> <span class="nav-text">Unit Test</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#VSCode-配置-unittest"><span class="nav-number">2.1.1.</span> <span class="nav-text">VSCode 配置 unittest</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Mock"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">Mock</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Log"><span class="nav-number">2.2.</span> <span class="nav-text">Log</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -636,7 +589,7 @@ if (document.querySelectorAll('pre.mermaid').length) {
       repo: 'rainfd.github.io',
       owner: 'rainfd',
       admin: ['rainfd'],
-      id: '03c83255f0c9b6c10efcad5542bd2f5c',
+      id: '840f9ff0201bec73d34b9fdb11285c32',
         language: 'zh-CN',
       distractionFreeMode: 'true'
     });

@@ -2,27 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rainfd.github.io/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/</loc>
-    <lastmod>2020-04-25</lastmod>
+    <lastmod>2020-06-15</lastmod>
   </url>  <url>
     <loc>https://rainfd.github.io/2019/04/20/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AEAnsible%E7%AF%87/</loc>
-    <lastmod>2020-04-25</lastmod>
+    <lastmod>2020-06-15</lastmod>
   </url>  <url>
     <loc>https://rainfd.github.io/2019/05/18/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6Git%E7%AF%87/</loc>
-    <lastmod>2020-04-25</lastmod>
+    <lastmod>2020-06-15</lastmod>
   </url>  <url>
     <loc>https://rainfd.github.io/2019/10/31/K8s-Disk-Resource-Consumption/</loc>
-    <lastmod>2020-04-25</lastmod>
+    <lastmod>2020-06-15</lastmod>
   </url>  <url>
     <loc>https://rainfd.github.io/2019/10/20/Travis-CI-Build-GithubPage/</loc>
-    <lastmod>2020-04-25</lastmod>
+    <lastmod>2020-06-15</lastmod>
   </url>  <url>
     <loc>https://rainfd.github.io/2019/12/15/Redis-Timeout/</loc>
-    <lastmod>2020-04-25</lastmod>
+    <lastmod>2020-06-15</lastmod>
+  </url>  <url>
+    <loc>https://rainfd.github.io/2020/06/15/Python%E7%8E%AF%E5%A2%83%E5%B7%A5%E7%A8%8B%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2020-06-15</lastmod>
   </url>  <url>
     <loc>https://rainfd.github.io/2020/04/02/K8sDNS/</loc>
-    <lastmod>2020-04-25</lastmod>
+    <lastmod>2020-06-15</lastmod>
   </url>  <url>
     <loc>https://rainfd.github.io/2020/02/01/Awk-Usage/</loc>
-    <lastmod>2020-04-25</lastmod>
+    <lastmod>2020-06-15</lastmod>
   </url>
 </urlset>
