@@ -89,7 +89,9 @@ theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
-deploy:
+# deploy:
+#  type: heroku
+#  resp: https://git.heroku.com/rainfd.git
 
 #algolia:
 #applicationID: '34LIFT72X3'
