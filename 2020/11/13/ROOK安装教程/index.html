@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+  <meta name="google-site-verification" content="gWP5MPuGz54SkU2QzFqz81o6E_Eyr_AHfyIx2VKZW70">
+  <meta name="baidu-site-verification" content="aTkXSRorSG">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="ROOK —— 一个云原生的开源的存储编排工具，提供了多种存储解决方案。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROOK安装教程">
+<meta property="og:url" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2020&#x2F;11&#x2F;13&#x2F;ROOK%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B&#x2F;index.html">
+<meta property="og:site_name" content="RainFD&#39;s Blog">
+<meta property="og:description" content="ROOK —— 一个云原生的开源的存储编排工具，提供了多种存储解决方案。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2020&#x2F;11&#x2F;13&#x2F;ROOK%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B&#x2F;rook.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2020&#x2F;11&#x2F;13&#x2F;ROOK%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B&#x2F;dashboard.jpg">
+<meta property="og:updated_time" content="2020-11-15T13:10:07.044Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2020&#x2F;11&#x2F;13&#x2F;ROOK%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B&#x2F;rook.png">
+
+<link rel="canonical" href="https://rainfd.github.io/2020/11/13/ROOK%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>ROOK安装教程 | RainFD's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?77670cc2555d4f085d80e590bdbbccbe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="RainFD's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RainFD's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Walking in the Rain</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2020/11/13/ROOK%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/sc2.jpg">
+      <meta itemprop="name" content="RainFD">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainFD's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROOK安装教程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-13 22:36:39" itemprop="dateCreated datePublished" datetime="2020-11-13T22:36:39+08:00">2020-11-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-15 21:10:07" itemprop="dateModified" datetime="2020-11-15T21:10:07+08:00">2020-11-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/k8s/" itemprop="url" rel="index">
+                    <span itemprop="name">k8s</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>ROOK —— 一个云原生的开源的存储编排工具，提供了多种存储解决方案。</p>
+<a id="more"></a>
+<h2 id="为什么选择ROOK"><a href="#为什么选择ROOK" class="headerlink" title="为什么选择ROOK"></a>为什么选择ROOK</h2><p>以往为k8s环境设置大容量存储的时候，要不选择NFS，要不选择高可用的Ceph集群。如果选择自己搭建NFS或者Ceph集群，因为对这些系统不熟悉，会遇到大大小小不同的坑，消耗着你原本并不宽裕的休息时间。</p>
+<p>现在，有了ROOK，只需轻松设置几个参数，就可以让你快速完成集群搭建。而且存储集群还自带故障恢复，监控等等自动化的功能，省心省时省力。虽然现在云厂商一般都提供了自己存储方案，但在家、在公司搭测试环境下，ROOK还是很不错的。</p>
+<p>下面是选择的是ROOK的Ceph集群方案，原因是这个方案可以充分利用Ceph原来的功能 :</p>
+<ul>
+<li>单个Pod使用的持久化块存储</li>
+<li>提供S3接口的对象存储功能</li>
+<li>跨多个Pod共享的CephFS</li>
+</ul>
+<h2 id="集群环境介绍"><a href="#集群环境介绍" class="headerlink" title="集群环境介绍"></a>集群环境介绍</h2><p>系统:  Ubuntu 20.04.1 LTS (GNU/Linux 5.4.0-48-generic x86_64)</p>
+<p>Kubernetes: v1.18.3</p>
+<p>机器: </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ip/host</th>
+<th>备注</th>
+<th>角色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>192.168.31.101 ub1</td>
+<td>虚拟机 1C4G 300G (笔记本i3-8100 vmware esix虚拟的ub1~3)</td>
+<td>Master</td>
+</tr>
+<tr>
+<td>192.168.31.134 ub2</td>
+<td>虚拟机 1C4G 300G</td>
+<td>Master</td>
+</tr>
+<tr>
+<td>192.168.31.148 ub3</td>
+<td>虚拟机 1C4G 300G</td>
+<td>Master</td>
+</tr>
+<tr>
+<td>192.168.31.186 ub4</td>
+<td>4C8G 30G 2.75T+2.75T+3.65T+150G (两个二手3T绿盘，一个4T西数蓝盘，一个家里淘汰的盘；机器是星际蜗牛B款)</td>
+<td>Node</td>
+</tr>
+<tr>
+<td>192.168.31.144 ub5</td>
+<td>虚拟机 1C8G 100G (主力机器R5-3600+32G，用多余的内存虚拟出来的)</td>
+<td>Node</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>这里搭Ceph用的硬盘都是ub4额外挂的硬盘。</p>
+<h2 id="安装前置要求"><a href="#安装前置要求" class="headerlink" title="安装前置要求"></a>安装前置要求</h2><ul>
+<li>ROOK <a href="https://rook.io/docs/rook/v1.5/k8s-pre-reqs.html" target="_blank" rel="noopener">https://rook.io/docs/rook/v1.5/k8s-pre-reqs.html</a></li>
+<li>Ceph <a href="https://rook.io/docs/rook/v1.5/k8s-pre-reqs.html" target="_blank" rel="noopener">https://rook.io/docs/rook/v1.5/k8s-pre-reqs.html</a></li>
+</ul>
+<p>一般Ubuntu和Centos系统都直接满足要求，这里就不详细展开了。</p>
+<h3 id="清空磁盘"><a href="#清空磁盘" class="headerlink" title="清空磁盘"></a>清空磁盘</h3><p>如果用来搭建集群的硬盘不是新的，在上面存了数据或者已经初始化为某种文件系统，就需要先清空磁盘。不然你要部署Operator的时候就会需要像我一样的问题：</p>
+<p><a href="https://github.com/rook/rook/issues/4553" target="_blank" rel="noopener">rook-ceph-crash-collector-keyring secret not created for crash reporter</a></p>
+<p>检查磁盘是否为空可以通过查看对应的设备FSTYPE是否为空</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lsblk -f</span><br><span class="line">NAME                  FSTYPE      LABEL UUID                                   MOUNTPOINT</span><br><span class="line">vda</span><br><span class="line">└─vda1                LVM2_member       eSO50t-GkUV-YKTH-WsGq-hNJY-eKNf-3i07IB</span><br><span class="line">  ├─ubuntu--vg-root   ext4              c2366f76-6e21-4f10-a8f3-6776212e2fe4   /</span><br><span class="line">  └─ubuntu--vg-swap_1 swap              9492a3dc-ad75-47cd-9596-678e8cf17ff9   [SWAP]</span><br><span class="line">vdb</span><br></pre></td></tr></table></figure>
+<p>如果不为空，可以用以下的命令清空硬盘</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=/dev/sdd bs=512K count=1</span><br><span class="line">fdisk -l /dev/sdd</span><br><span class="line">Disk /dev/sdd: 149.5 GiB, 160041885696 bytes, 312581808 sectors</span><br><span class="line">Disk model: WDC WD1600AAJS-0</span><br><span class="line">Units: sectors of 1 * 512 = 512 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br></pre></td></tr></table></figure>
+<h2 id="正式安装"><a href="#正式安装" class="headerlink" title="正式安装"></a>正式安装</h2><h3 id="1-安装ROOK的Ceph集群Operator"><a href="#1-安装ROOK的Ceph集群Operator" class="headerlink" title="1. 安装ROOK的Ceph集群Operator"></a>1. 安装ROOK的Ceph集群Operator</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> --single-branch --branch v1.4.7 https://github.com/rook/rook.git</span><br><span class="line"><span class="built_in">cd</span> rook/cluster/examples/kubernetes/ceph</span><br><span class="line">kubectl create -f common.yaml</span><br><span class="line">kubectl create -f operator.yaml</span><br><span class="line"><span class="comment"># kubectl create -f cluster.yaml</span></span><br></pre></td></tr></table></figure>
+<p>正确安装后就可以在在rook-ceph的命名空间里面，各个节点的csi插件csi-cephfsplugin和rook-discover磁盘发现服务安装好。</p>
+<p><em>注意镜像需要翻墙获取</em></p>
+<h3 id="2-安装Ceph集群"><a href="#2-安装Ceph集群" class="headerlink" title="2. 安装Ceph集群"></a>2. 安装Ceph集群</h3><p>安装前需要根据机器情况修改配置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">diff</span> <span class="bullet">--git</span> <span class="string">a/cluster/examples/kubernetes/ceph/cluster.yaml</span> <span class="string">b/cluster/examples/kubernetes/ceph/cluster.yaml</span></span><br><span class="line"><span class="string">index</span> <span class="string">b57b8892..efc1c336</span> <span class="number">100644</span></span><br><span class="line"><span class="bullet">-</span><span class="bullet">--</span> <span class="string">a/cluster/examples/kubernetes/ceph/cluster.yaml</span></span><br><span class="line"><span class="string">+++</span> <span class="string">b/cluster/examples/kubernetes/ceph/cluster.yaml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 因为只用了一台机器上的磁盘，所以这个监控服务只用部署一个就行了</span></span><br><span class="line"></span><br><span class="line"><span class="string">@@</span> <span class="bullet">-40</span><span class="string">,7</span> <span class="string">+40,7</span> <span class="string">@@</span> <span class="attr">spec:</span></span><br><span class="line"><span class="attr">   continueUpgradeAfterChecksEvenIfNotHealthy:</span> <span class="literal">false</span></span><br><span class="line">   <span class="comment"># set the amount of mons to be started</span></span><br><span class="line"><span class="attr">   mon:</span></span><br><span class="line"><span class="attr">-    count:</span> <span class="number">3</span></span><br><span class="line"><span class="string">+</span>    <span class="attr">count:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">     allowMultiplePerNode:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">   mgr:</span></span><br><span class="line"><span class="attr">     modules:</span></span><br><span class="line">     </span><br><span class="line"><span class="comment"># 这两个配置是使用全部的节点上的全部磁盘，一般不推荐这样设置，因为它也会把默认的系统盘识别到里面。</span></span><br><span class="line">     </span><br><span class="line"><span class="string">@@</span> <span class="bullet">-176</span><span class="string">,8</span> <span class="string">+176,8</span> <span class="string">@@</span> <span class="attr">spec:</span></span><br><span class="line"> <span class="comment">#    osd: rook-ceph-osd-priority-class</span></span><br><span class="line"> <span class="comment">#    mgr: rook-ceph-mgr-priority-class</span></span><br><span class="line"><span class="attr">   storage:</span> <span class="comment"># cluster level storage configuration and selection</span></span><br><span class="line"><span class="attr">-    useAllNodes:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">-    useAllDevices:</span> <span class="literal">true</span></span><br><span class="line"><span class="string">+</span>    <span class="attr">useAllNodes:</span> <span class="literal">false</span></span><br><span class="line"><span class="string">+</span>    <span class="attr">useAllDevices:</span> <span class="literal">false</span></span><br><span class="line">     <span class="comment">#deviceFilter:</span></span><br><span class="line"><span class="attr">     config:</span></span><br><span class="line">       <span class="comment"># metadataDevice: "md0" # specify a non-rotational storage so ceph-volume will use it as block db device of bluestore.</span></span><br><span class="line">       </span><br><span class="line"><span class="comment"># 下面就是指定了ub4的各个使用硬盘名字</span></span><br><span class="line">       </span><br><span class="line"><span class="string">@@</span> <span class="bullet">-187</span><span class="string">,7</span> <span class="string">+187,7</span> <span class="string">@@</span> <span class="attr">spec:</span></span><br><span class="line">       <span class="comment"># encryptedDevice: "true" # the default value for this option is "false"</span></span><br><span class="line"> <span class="comment"># Individual nodes and their config can be specified as well, but 'useAllNodes' above must be set to false. Then, only the named</span></span><br><span class="line"> <span class="comment"># nodes below will be used as storage resources.  Each node's 'name' field should match their 'kubernetes.io/hostname' label.</span></span><br><span class="line"><span class="bullet">-</span><span class="comment">#    nodes:</span></span><br><span class="line"><span class="string">+</span>    <span class="attr">nodes:</span></span><br><span class="line"> <span class="comment">#    - name: "172.17.4.201"</span></span><br><span class="line"> <span class="comment">#      devices: # specific devices to use for storage can be specified for each node</span></span><br><span class="line"> <span class="comment">#      - name: "sdb"</span></span><br><span class="line"><span class="string">@@</span> <span class="bullet">-199</span><span class="string">,6</span> <span class="string">+199,12</span> <span class="string">@@</span> <span class="attr">spec:</span></span><br><span class="line"> <span class="comment">#        storeType: filestore</span></span><br><span class="line"> <span class="comment">#    - name: "172.17.4.301"</span></span><br><span class="line"> <span class="comment">#      deviceFilter: "^sd."</span></span><br><span class="line"><span class="string">+</span>    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">"192.168.31.186"</span></span><br><span class="line"><span class="string">+</span>      <span class="attr">devices:</span></span><br><span class="line"><span class="string">+</span>      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">"sdb"</span></span><br><span class="line"><span class="string">+</span>      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">"sdc"</span></span><br><span class="line"><span class="string">+</span>      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">"sdd"</span></span><br><span class="line"><span class="string">+</span>      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">"sde"</span></span><br><span class="line">   <span class="comment"># The section for configuring management of daemon disruptions during upgrade or fencing.</span></span><br><span class="line"><span class="attr">   disruptionManagement:</span></span><br><span class="line">     <span class="comment"># If true, the operator will create and manage PodDisruptionBudgets for OSD, Mon, RGW, and MDS daemons. OSD PDBs are managed dynamically</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f cluster.yaml</span><br></pre></td></tr></table></figure>
+<p>启动成功后就能看到对应的osd启动，每个硬盘对应一个osd，所以我这里是4个。</p>
+<img src="/2020/11/13/ROOK%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/rook.png" class="">
+<p>如何发现osd的数量不对，可以参考这个<a href="https://rook.io/docs/rook/v1.4/ceph-common-issues.html#osd-pods-are-not-created-on-my-devices" target="_blank" rel="noopener">https://rook.io/docs/rook/v1.4/ceph-common-issues.html#osd-pods-are-not-created-on-my-devices</a> 看看是什么问题导致的。</p>
+<h3 id="3-设置块存储StorageClass"><a href="#3-设置块存储StorageClass" class="headerlink" title="3. 设置块存储StorageClass"></a>3. 设置块存储StorageClass</h3><p>原来故障恢复的主体是主机，所以需要至少3台主机。但因为我的硬盘都在一台机器上，这就要修改故障恢复的主体为osd。如果不需要做3副本，这里这可以设置为两副本。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">diff</span> <span class="bullet">--git</span> <span class="string">a/cluster/examples/kubernetes/ceph/object.yaml</span> <span class="string">b/cluster/examples/kubernetes/ceph/object.yaml</span></span><br><span class="line"><span class="string">index</span> <span class="string">dfadaee6..416e725c</span> <span class="number">100644</span></span><br><span class="line"><span class="bullet">-</span><span class="bullet">--</span> <span class="string">a/cluster/examples/kubernetes/ceph/object.yaml</span></span><br><span class="line"><span class="string">+++</span> <span class="string">b/cluster/examples/kubernetes/ceph/object.yaml</span></span><br><span class="line"><span class="string">@@</span> <span class="bullet">-12</span><span class="string">,7</span> <span class="string">+12,7</span> <span class="string">@@</span> <span class="attr">metadata:</span></span><br><span class="line"><span class="attr"> spec:</span></span><br><span class="line">   <span class="comment"># The pool spec used to create the metadata pools. Must use replication.</span></span><br><span class="line"><span class="attr">   metadataPool:</span></span><br><span class="line"><span class="attr">-    failureDomain:</span> <span class="string">host</span></span><br><span class="line"><span class="string">+</span>    <span class="attr">failureDomain:</span> <span class="string">osd</span></span><br><span class="line"><span class="attr">     replicated:</span></span><br><span class="line"><span class="attr">       size:</span> <span class="number">3</span></span><br><span class="line">       <span class="comment"># Disallow setting pool with replica 1, this could lead to data loss without recovery.</span></span><br><span class="line"><span class="string">@@</span> <span class="bullet">-27</span><span class="string">,7</span> <span class="string">+27,7</span> <span class="string">@@</span> <span class="attr">spec:</span></span><br><span class="line">       <span class="comment">#target_size_ratio: ".5"</span></span><br><span class="line">   <span class="comment"># The pool spec used to create the data pool. Can use replication or erasure coding.</span></span><br><span class="line"><span class="attr">   dataPool:</span></span><br><span class="line"><span class="attr">-    failureDomain:</span> <span class="string">host</span></span><br><span class="line"><span class="string">+</span>    <span class="attr">failureDomain:</span> <span class="string">osd</span></span><br><span class="line"><span class="attr">     replicated:</span></span><br><span class="line"><span class="attr">       size:</span> <span class="number">3</span></span><br><span class="line">       <span class="comment"># Disallow setting pool with replica 1, this could lead to data loss without recovery.</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f object.yml</span><br></pre></td></tr></table></figure>
+<p>正常运行后就可以在StorageClass看到rook-ceph-block，这样部署应用的时候就可以方便持久化的存储了。</p>
+<p>关于对象存储和CephFS的设置跟这里都大同小异，这里就不继续了。</p>
+<h3 id="4-其他安装问题"><a href="#4-其他安装问题" class="headerlink" title="4. 其他安装问题"></a>4. 其他安装问题</h3><p>如果有其他问题导致安装失败，可以看官网提供的<a href="https://rook.io/docs/rook/v1.5/ceph-common-issues.html" target="_blank" rel="noopener">ceph常见问题文档</a></p>
+<h3 id="5-常用工具"><a href="#5-常用工具" class="headerlink" title="5. 常用工具"></a>5. 常用工具</h3><p>默认安装的Operator包含了Dashboard，不过没有设置访问方式。需要自己添加Service暴露服务.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">rook-ceph-mgr-dashboard-external-https</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">rook-ceph</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">rook-ceph-mgr</span></span><br><span class="line"><span class="attr">    rook_cluster:</span> <span class="string">rook-ceph</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">dashboard</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">8443</span></span><br><span class="line"><span class="attr">    protocol:</span> <span class="string">TCP</span></span><br><span class="line"><span class="attr">    targetPort:</span> <span class="number">8443</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">rook-ceph-mgr</span></span><br><span class="line"><span class="attr">    rook_cluster:</span> <span class="string">rook-ceph</span></span><br><span class="line"><span class="attr">  sessionAffinity:</span> <span class="string">None</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">NodePort</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f dashboard-external-https.yaml</span><br><span class="line">$ kubectl -n rook-ceph get service</span><br><span class="line">NAME                                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE</span><br><span class="line">rook-ceph-mgr                           ClusterIP   10.108.111.192   &lt;none&gt;        9283/TCP         4h</span><br><span class="line">rook-ceph-mgr-dashboard                 ClusterIP   10.110.113.240   &lt;none&gt;        8443/TCP         4h</span><br><span class="line">rook-ceph-mgr-dashboard-external-https  NodePort    10.101.209.6     &lt;none&gt;        8443:31176/TCP   4h</span><br></pre></td></tr></table></figure>
+<p>默认的安装包含了一个admin的账户，获取密码的方式如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n rook-ceph get secret rook-ceph-dashboard-password -o jsonpath=<span class="string">"&#123;['data']['password']&#125;"</span> | base64 --decode &amp;&amp; <span class="built_in">echo</span></span><br></pre></td></tr></table></figure>
+<p>现在访问任意节点的 31176端口就可以看到下面的界面</p>
+<img src="/2020/11/13/ROOK%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/dashboard.jpg" class="">
+<p><em>参考资料</em></p>
+<ul>
+<li><a href="https://www.cnblogs.com/kevincaptain/p/10655721.html" target="_blank" rel="noopener">https://www.cnblogs.com/kevincaptain/p/10655721.html</a></li>
+<li><a href="https://rook.io/docs/rook/v1.4/ceph-common-issues.html" target="_blank" rel="noopener">https://rook.io/docs/rook/v1.4/ceph-common-issues.html</a></li>
+<li><a href="https://rook.io/docs/rook/v1.4/ceph-cluster-crd.html" target="_blank" rel="noopener">https://rook.io/docs/rook/v1.4/ceph-cluster-crd.html</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2020/08/02/%E4%BD%BF%E7%94%A8Gitlab-CICD%E6%9D%A5%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2Golang%E5%BA%94%E7%94%A8/" rel="next" title="使用Gitlab CICD来构建部署Golang应用">
+                  <i class="fa fa-chevron-left"></i> 使用Gitlab CICD来构建部署Golang应用
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选择ROOK"><span class="nav-number">1.</span> <span class="nav-text">为什么选择ROOK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群环境介绍"><span class="nav-number">2.</span> <span class="nav-text">集群环境介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装前置要求"><span class="nav-number">3.</span> <span class="nav-text">安装前置要求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#清空磁盘"><span class="nav-number">3.1.</span> <span class="nav-text">清空磁盘</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正式安装"><span class="nav-number">4.</span> <span class="nav-text">正式安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装ROOK的Ceph集群Operator"><span class="nav-number">4.1.</span> <span class="nav-text">1. 安装ROOK的Ceph集群Operator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-安装Ceph集群"><span class="nav-number">4.2.</span> <span class="nav-text">2. 安装Ceph集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-设置块存储StorageClass"><span class="nav-number">4.3.</span> <span class="nav-text">3. 设置块存储StorageClass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-其他安装问题"><span class="nav-number">4.4.</span> <span class="nav-text">4. 其他安装问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-常用工具"><span class="nav-number">4.5.</span> <span class="nav-text">5. 常用工具</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="RainFD"
+    src="/images/sc2.jpg">
+  <p class="site-author-name" itemprop="name">RainFD</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:rainfd@live.cn" title="E-Mail &amp;rarr; mailto:rainfd@live.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RainFD</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.1
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/muse.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script><script src="/js/algolia-search.js?v=7.4.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'f05e3169de9741f17ed8',
+      clientSecret: '454d4119678dcdeaa500428d501728f33901fe9b',
+      repo: 'rainfd.github.io',
+      owner: 'rainfd',
+      admin: ['rainfd'],
+      id: 'f95fae3ca133a1ccecf020aef3889e4b',
+        language: 'zh-CN',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
