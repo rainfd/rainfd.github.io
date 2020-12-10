@@ -52,28 +52,32 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="RainFD&#39;s Blog">
-<meta property="og:url" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;page&#x2F;2&#x2F;index.html">
+  <meta name="description" content="最近再刷MIT的6.S081操作系统课程。今年的课是基于RISC-V架构讲的，运行的系统是跑在qemu模拟器上。随着对RISC-V的了解不断加深，我对这个ISA就越感兴趣，所以想着买一块RISC-V的开发板过来，直接在上面跑课程lab，或者试试移植linux来玩玩。但现实还是说明这个ISA还是太年轻了。">
+<meta name="keywords" content="RISC-V">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于RISC-V开发板的二三事">
+<meta property="og:url" content="https:&#x2F;&#x2F;rainfd.github.io&#x2F;2020&#x2F;12&#x2F;10&#x2F;%E5%85%B3%E4%BA%8ERISC-V%E5%BC%80%E5%8F%91%E6%9D%BF%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B&#x2F;index.html">
 <meta property="og:site_name" content="RainFD&#39;s Blog">
+<meta property="og:description" content="最近再刷MIT的6.S081操作系统课程。今年的课是基于RISC-V架构讲的，运行的系统是跑在qemu模拟器上。随着对RISC-V的了解不断加深，我对这个ISA就越感兴趣，所以想着买一块RISC-V的开发板过来，直接在上面跑课程lab，或者试试移植linux来玩玩。但现实还是说明这个ISA还是太年轻了。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-12-10T08:47:52.689Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://rainfd.github.io/page/2/">
+<link rel="canonical" href="https://rainfd.github.io/2020/12/10/%E5%85%B3%E4%BA%8ERISC-V%E5%BC%80%E5%8F%91%E6%9D%BF%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: true,
-    isPost: false,
+    isHome: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>RainFD's Blog</title>
+  <title>关于RISC-V开发板的二三事 | RainFD's Blog</title>
   
 
 
@@ -222,11 +226,11 @@
             
 
   <div class="posts-expand">
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rainfd.github.io/2020/12/10/%E5%85%B3%E4%BA%8ERISC-V%E5%BC%80%E5%8F%91%E6%9D%BF%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/sc2.jpg">
@@ -239,8 +243,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/" class="post-title-link" itemprop="url">成为DevOps工程师-配置Terraform篇</a>
+          关于RISC-V开发板的二三事
         </h1>
 
         <div class="post-meta">
@@ -249,29 +252,19 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2019-04-07 22:21:05" itemprop="dateCreated datePublished" datetime="2019-04-07T22:21:05+08:00">2019-04-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-10 16:47:52" itemprop="dateModified" datetime="2020-12-10T16:47:52+08:00">2020-12-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88/" itemprop="url" rel="index">
-                    <span itemprop="name">成为DevOps工程师</span>
-                  </a>
-                </span>
+              <time title="创建时间：2020-12-10 16:36:14 / 修改时间：16:47:52" itemprop="dateCreated datePublished" datetime="2020-12-10T16:36:14+08:00">2020-12-10</time>
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -282,27 +275,56 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在博文<a href="https://medium.com/@devfire/how-to-become-a-devops-engineer-in-six-months-or-less-366097df7737" target="_blank" rel="noopener">How To Become a DevOps Engineer In Six Months or Less</a>中，作者介绍了一条DevOps的学习路线</p>
-<img src="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/devops_six_parts.png" class="">
-<p>本系列文章将依据这条路线，因地制宜，介绍各个环节和这些工具的使用。</p>
-<p>本文正是第一篇：配置 Terraform篇。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/04/07/%E6%88%90%E4%B8%BADevOps%E5%B7%A5%E7%A8%8B%E5%B8%88-%E9%85%8D%E7%BD%AETerraform%E7%AF%87/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <p>最近再刷MIT的6.S081操作系统课程。今年的课是基于RISC-V架构讲的，运行的系统是跑在qemu模拟器上。随着对RISC-V的了解不断加深，我对这个ISA就越感兴趣，所以想着买一块RISC-V的开发板过来，直接在上面跑课程lab，或者试试移植linux来玩玩。但现实还是说明这个ISA还是太年轻了。</p>
+<a id="more"></a>
+<h2 id="前置要求"><a href="#前置要求" class="headerlink" title="前置要求"></a>前置要求</h2><p>要让Linux或者xv6跑在RISC-V上，必须满足两个条件：</p>
+<ol>
+<li><p>芯片必须带MMU</p>
+<p>一般的RISC-V芯片都是MCU芯片，目标是嵌入式的场景，许多程序直接裸跑，最多也是上RTOS这类实时操作系统。它们完全不需要MMU。</p>
+</li>
+<li><p>支持3种特权模式</p>
+<p> RISC-V文档中定义了machine mode、supervisor mode和user mode 3种特权模式。假设运行Linux，machine mode一般用于机器初始化，supervisor mode用于运行系统内核，user mode运行用户程序。基于以上同样的理由，一般RISC-V的芯片只会实现machine mode和user mode。</p>
+</li>
+</ol>
+<h2 id="相关信息"><a href="#相关信息" class="headerlink" title="相关信息"></a>相关信息</h2><h3 id="HiFive-Unmatched"><a href="#HiFive-Unmatched" class="headerlink" title="HiFive Unmatched"></a>HiFive Unmatched</h3><p><a href="https://www.sifive.com/boards/hifive-unleashed" target="_blank" rel="noopener">https://www.sifive.com/boards/hifive-unleashed</a></p>
+<p>第一块能运行完成Linux的RISC-V开发板。用FPGA做的，看到这个基本就死心了。再看看价格，2000刀…</p>
+<h3 id="芯来的UX600芯片"><a href="#芯来的UX600芯片" class="headerlink" title="芯来的UX600芯片"></a>芯来的UX600芯片</h3><p><a href="https://www.nucleisys.com/product/site/ux600/" target="_blank" rel="noopener">https://www.nucleisys.com/product/site/ux600/</a></p>
+<p>一家国产公司。产品页面介绍UX600系列对标ARM Cortex-A7等内核。其中UX608即包含MMU又实现了3种特权模式，但可惜的是，找不到相关公开的开发板资源。</p>
+<h3 id="阿里的玄铁906"><a href="#阿里的玄铁906" class="headerlink" title="阿里的玄铁906"></a>阿里的玄铁906</h3><p><a href="https://www.nucleisys.com/product/site/ux600/" target="_blank" rel="noopener">https://www.nucleisys.com/product/site/ux600/</a></p>
+<p>又是国产公司。Sipeed（矽速科技）11月6号在Twitter发布了这个芯片，号称12.5刀就能买到开发板。很明显，现在是没有的。</p>
+<h3 id="PicoRio"><a href="#PicoRio" class="headerlink" title="PicoRio"></a>PicoRio</h3><p><a href="http://www.eepw.com.cn/article/202007/415955.htm" target="_blank" rel="noopener">http://www.eepw.com.cn/article/202007/415955.htm</a></p>
+<p>对标树莓派的RISC-V开发板。可惜消息还是今年下半年的出来的，还不知道什么时候能出来。</p>
+<h3 id="Sipeed的M1-K210"><a href="#Sipeed的M1-K210" class="headerlink" title="Sipeed的M1 K210"></a>Sipeed的M1 K210</h3><p>跟上面跟阿里合作玄铁906的同一家公司。这块开发板18年的时候就已经出来了，但这块K210的芯片不支持MMU。（有网友传出说是支持MMU的，但是没放出文档）</p>
+<h3 id="蜂鸟的E203"><a href="#蜂鸟的E203" class="headerlink" title="蜂鸟的E203"></a>蜂鸟的E203</h3><p>还是芯来科技的，这家公司在RISC-V领域好像还可以呀。一款开源的芯片，还伴有《手把手教你设计CPU RISC-V处理器篇》这本书。可惜的是，这还是一个嵌入式的MCU。</p>
+<h3 id="总结-amp-题外话"><a href="#总结-amp-题外话" class="headerlink" title="总结&amp;题外话"></a>总结&amp;题外话</h3><p>其实在网上搜的时候已经发现，不少人已经将不同版本的Linux往RISC-V上迁移了，最近的Linux5.7也有支持RISC-V的patch，只不过他们都是用qemu模拟的。所以最终结论还是老老实实用qemu来做lab吧（<em>老老实实学学qemu怎么用</em>），也许再等几个月玄铁906或者PicoRio能出来？</p>
+
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          <div class="post-tags">
+              <a href="/tags/RISC-V/" rel="tag"># RISC-V</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2020/11/13/ROOK%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" rel="next" title="ROOK安装教程">
+                  <i class="fa fa-chevron-left"></i> ROOK安装教程
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
       </footer>
+    
   </article>
   
   
@@ -310,15 +332,10 @@
 
   </div>
 
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-  </nav>
-
-
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
         </div>
           
@@ -343,6 +360,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前置要求"><span class="nav-number">1.</span> <span class="nav-text">前置要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关信息"><span class="nav-number">2.</span> <span class="nav-text">相关信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HiFive-Unmatched"><span class="nav-number">2.1.</span> <span class="nav-text">HiFive Unmatched</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#芯来的UX600芯片"><span class="nav-number">2.2.</span> <span class="nav-text">芯来的UX600芯片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#阿里的玄铁906"><span class="nav-number">2.3.</span> <span class="nav-text">阿里的玄铁906</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PicoRio"><span class="nav-number">2.4.</span> <span class="nav-text">PicoRio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sipeed的M1-K210"><span class="nav-number">2.5.</span> <span class="nav-text">Sipeed的M1 K210</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#蜂鸟的E203"><span class="nav-number">2.6.</span> <span class="nav-text">蜂鸟的E203</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结-amp-题外话"><span class="nav-number">2.7.</span> <span class="nav-text">总结&amp;题外话</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -563,6 +581,23 @@ if (document.querySelectorAll('pre.mermaid').length) {
 
   
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: 'f05e3169de9741f17ed8',
+      clientSecret: '454d4119678dcdeaa500428d501728f33901fe9b',
+      repo: 'rainfd.github.io',
+      owner: 'rainfd',
+      admin: ['rainfd'],
+      id: '2cda2ed70a77b2dfd40f6e420cfd094f',
+        language: 'zh-CN',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
 
 </body>
 </html>
