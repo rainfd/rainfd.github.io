@@ -1,0 +1,91 @@
+baseURL = "rainfd.com"
+title = "Rainfd's Site"
+theme = "manis"
+
+# Copyright notice. Note: You can use HTML tag here
+copyright = "&copy; 2022 RainFD"
+pluralizeListTitles = false
+
+# Minimum number of posts before paginate navigation show up
+paginate = 10
+
+# Your disqus shortname
+disqusShortname = ""
+
+# Edit this if you want to translate your blog
+defaultContentLanguage = "en"
+
+# Code Highlighting (Chroma)
+pygmentsCodeFences = true
+pygmentsUseClasses = true
+
+[menu]
+	[[menu.main]]
+		name = "Post"
+		url = "/post/"
+	
+	# [[menu.main]]
+	# 	name = "About"
+	# 	url = "/about"
+
+[taxonomies]
+	tag = "tags"
+
+[params]
+	# If false, use minified CSS (ui.min.css)
+	debugCSS = false
+	# Custom CSS
+	customCSS = []
+	
+	# Site meta description
+	description = "RainFD的个人博客."
+	# Site's Tagline (Subtitle or Keyword)
+	tagline = "Walking in the Rain"
+	# If true give attribution to this theme
+	themeAttrib = true
+	# URL to license file, can be outside of your domain
+	licenseURL = "https://raw.githubusercontent.com/rainfd/rainfd.github.io/main/LICENSE"
+
+	# Configure which sections for Latest Posts
+	mainSections = ["blog", "post"]
+	# Configure which sections for Latest Works
+	workSections = ["work"]
+	
+	# List of sections that support disqus comments
+	disqusSections = [ "blog" ]
+	# List of sections that support utterances comments
+	utterancesSections = [ "blog" ]
+	
+	# Utterances Configuration
+	utterancesRepo = ""
+	utterancesTheme = "github-light"
+	utterancesLabel = ""
+
+	# 404 Configuration
+	head404 = "Sorry, I can't find what you want."
+	sub404 = "Back to <a href='/'>Home</a>."
+
+	# Color of your website's accent
+	colorTheme = "#ff6565"
+	# Maximum number of item in Latest Posts or Works
+	latestCount = 3
+	# Path to site's favicon image
+	faviconImg = ""
+	# Date format in item list
+	dateFmt = "Jan 02, 2006"
+
+	# Code Highlighting (HighlightJS)
+	highlightJs = false
+	highlightJsLanguages = [ "go" ]
+	highlightJsStyle = "ocean"
+
+	# Social Links
+	email = "rainfd@live.cn"
+	github = "https://github.com/rainfd/"
+
+
+# Language Configuration
+#[languages.in]
+#	lang = "in"
+#	languageName = "Bahasa Indonesia"
+#	weight = 1
