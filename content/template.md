@@ -1,11 +1,17 @@
-+++
-title = "title"
-description = "This is a blog template in manis theme"
-tags = [
-]
-date = 2022-01-16
+---
+title: title
+description:
+date: 2019-04-07
+tags: 
+ - devops
+typora-root-url: ../../static/
+---
 
-+++
+简介xxx
+
+<!--more-->
+
+--
 
 
 
