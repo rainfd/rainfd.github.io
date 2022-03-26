@@ -89,3 +89,25 @@ pygmentsUseClasses = true
 #	lang = "in"
 #	languageName = "Bahasa Indonesia"
 #	weight = 1
+
+
+[comments]
+  # Comment provider:
+  provider = "giscus"
+
+  # Which page types are commentable?
+  commentable = {page = true, post = true, docs = false, project = false, publication = true, talk = false}
+
+  # Configuration of giscus
+  [comments.giscus]
+    dataRepo="rainfd/rainfd.github.io"
+    dataRepoId="R_kgDOGrfduQ"
+    dataCategory="Announcements"
+    dataCategoryId="DIC_kwDOGrfduc4CAscd"
+    dataMapping="pathname"
+    dataReactionsEnabled="1"
+    dataEmitMetadata="0"
+    dataInputPosition="bottom"
+    dataTheme="light"
+    dataLang="zh-CN"
+    crossorigin="anonymous"
