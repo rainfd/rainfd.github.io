@@ -54,10 +54,10 @@ pygmentsUseClasses = true
 	# List of sections that support disqus comments
 	disqusSections = [ "blog" ]
 	# List of sections that support utterances comments
-	utterancesSections = [ "blog" ]
+	utterancesSections = [ "blog", "post" ]
 	
 	# Utterances Configuration
-	utterancesRepo = ""
+	utterancesRepo = "raifd/rainfd.github.io"
 	utterancesTheme = "github-light"
 	utterancesLabel = ""
 
