@@ -57,7 +57,7 @@ pygmentsUseClasses = true
 	utterancesSections = [ "blog", "post" ]
 	
 	# Utterances Configuration
-	utterancesRepo = "raifd/rainfd.github.io"
+	utterancesRepo = "rainfd/rainfd.github.io"
 	utterancesTheme = "github-light"
 	utterancesLabel = ""
 
