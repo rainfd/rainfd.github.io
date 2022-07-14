@@ -68,14 +68,14 @@ pygmentsUseClasses = true
 	# Color of your website's accent
 	colorTheme = "#ff6565"
 	# Maximum number of item in Latest Posts or Works
-	latestCount = 10
+	latestCount = 5
 	# Path to site's favicon image
 	faviconImg = ""
 	# Date format in item list
 	dateFmt = "Jan 02, 2006"
 
 	# Code Highlighting (HighlightJS)
-	highlightJs = false
+	highlightJs = true
 	highlightJsLanguages = [ "go" ]
 	highlightJsStyle = "ocean"
 
