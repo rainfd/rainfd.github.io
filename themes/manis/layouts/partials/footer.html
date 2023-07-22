@@ -13,6 +13,9 @@
 					{{ with .Site.Params.LicenseURL }}
 					| <a href="{{.}}">{{ T "license" }}</a>
 					{{ end }}
+					{{ with .Site.Params.PublishNumber }}
+					| 备案号: {{ . }}
+					{{ end }}
 				</p>
 				{{ if ne .Kind "home" }}
 				<a href="#brand">

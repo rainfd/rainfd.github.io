@@ -46,6 +46,8 @@ pygmentsUseClasses = true
 	# URL to license file, can be outside of your domain
 	licenseURL = "https://raw.githubusercontent.com/rainfd/rainfd.github.io/main/LICENSE"
 
+	publishNumber = "粤ICP备2022020499号"
+
 	# Configure which sections for Latest Posts
 	mainSections = ["blog", "post"]
 	# Configure which sections for Latest Works
