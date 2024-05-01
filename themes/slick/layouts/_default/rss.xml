@@ -1,0 +1,47 @@
+{{- $pctx := cond .IsHome .Site . -}}
+{{- $limiting := default -1 .Site.Config.Services.RSS.Limit -}}
+{{- $orderkey := default "date" .Site.Params.orderPageParam -}}
+{{- $orderrev := default true .Site.Params.orderPageReverse -}}
+{{- $pagepool := $pctx.RegularPages.ByParam $orderkey -}}
+{{- $pagepool := cond $orderrev $pagepool.Reverse $pagepool -}}
+{{- if gt $limiting 0 -}}
+	{{- $pagepool := first $limiting $pagepool -}}
+{{- end -}}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>{{ if eq .Title .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} on {{ end }}{{ .Site.Title }}{{ end }}</title>
+		<link>{{ .Permalink }}</link>
+		<description>Recent content {{ if ne  .Title  .Site.Title }}{{ with .Title }}in {{ . }} {{ end }}{{ end }}on {{ .Site.Title }}</description>
+		<generator>Hugo {{ hugo.Version }}</generator>
+		{{- with .Site.LanguageCode }}
+		<language>{{ . }}</language>
+		{{- end }}
+		{{- with .Site.Author.email }}
+		<managingEditor>{{ . }}{{ with $.Site.Author.name }} ({{ . }}){{ end }}</managingEditor>
+		<webMaster>{{ . }}{{ with $.Site.Author.name }} ({{ . }}){{ end }}</webMaster>
+		{{- end }}
+		{{- with .Site.Copyright }}
+		<copyright>{{ . }}</copyright>
+		{{- end }}
+		{{- if not .Date.IsZero }}
+		<lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+		{{- end }}
+		{{- with .OutputFormats.Get "RSS" }}
+			{{- $href := printf "href=%q" .Permalink | safeHTMLAttr }}
+			{{- $type := printf "type=%q" .MediaType | safeHTMLAttr }}
+		<atom:link {{ $href }} rel="self" {{ $type }}/>
+		{{- end }}
+		{{- range $pagepool }}
+		<item>
+			<title>{{ .Title }}</title>
+			<link>{{ .Permalink }}</link>
+			<pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+			{{- with .Site.Author.email }}
+			<author>{{ . }}{{ with $.Site.Author.name }} ({{ . }}){{ end }}</author>
+			{{- end }}
+			<guid isPermaLink="true">{{ .Permalink }}</guid>
+			<description>{{ .Content | html }}</description>
+		</item>
+		{{- end }}
+	</channel>
+</rss>

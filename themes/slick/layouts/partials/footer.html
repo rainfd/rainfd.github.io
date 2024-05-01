@@ -1,0 +1,49 @@
+<div class="footer">
+  <div class="footer-content">
+    <div class="pure-menu pure-menu-horizontal">
+      <ul class="pure-menu-list">
+        {{- $curr := . }}
+        {{- range .Site.Menus.footer.ByWeight }}
+        {{- $selected := cond (or ($curr.IsMenuCurrent "footer" .) ($curr.HasMenuCurrent "footer" .)) " pure-menu-selected" "" }}
+        <li class="pure-menu-item{{ $selected }}"{{ if .Title }} title="{{ .Title }}"{{ end }}>
+          <a class="pure-menu-link" href="{{ .URL }}">{{ .Name }}</a>
+        </li>
+        {{- end }}
+        {{- if default true .Site.Params.showRssLink }}
+          {{- with .Site.Home.OutputFormats.Get "RSS" }}
+        <li class="pure-menu-item" title="RSS Feed">
+          <a href="{{ .RelPermalink }}" class="pure-menu-link">RSS</a>
+        </li>
+          {{- end }}
+        {{- end }}
+        <li class="pure-menu-item fix-cursor-pointer" title="Go to top">
+          <a class="pure-menu-link" id="btn-gototop">
+            <span class="fix-placement-up">&#x21e7;&#xfe0e;</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  {{- with .Site.Copyright }}
+  <div class="footer-copyright">
+    <div class="pure-menu pure-menu-horizontal">
+      <ul class="pure-menu-list">
+        <li class="pure-menu-item pure-menu-disabled">
+          &copy; {{ now.Format "2006" }} &mdash; {{ . }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  {{- end }}
+  {{- with .Site.Params.ICP }}
+  <div class="footer-copyright">
+    <div class="pure-menu pure-menu-horizontal">
+      <ul class="pure-menu-list">
+        <li class="pure-menu-item pure-menu-disabled">
+          &copy;{{ . }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  {{- end }}
+</div>

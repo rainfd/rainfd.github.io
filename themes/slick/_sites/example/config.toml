@@ -6,13 +6,13 @@ theme = "slick"
 # Site title (not shown if commented out or set to false)
 # (If you disable this, add some link on the index page inside menu.main,
 #  otherwise your visitors will get confused and lost...)
-title = "RainFD's Blog"
+title = "Slick Example"
 
 languageCode = "en"
 defaultContentLanguage = "en"
 
 # Will appear below the footer links with a © sign and the current year
-copyright = "RainFD.com | Powered by Hugo | Based on Theme: Slick"
+copyright = "Some Author — All rights reserved."
 
 [markup]
     [markup.goldmark]
@@ -30,14 +30,11 @@ paginate = 10
 paginatePath = "page"
 
 [params]
-    # 备案号
-    icp = "粤ICP备2022020499号"
-
     # Site subtitle (not shown if commented out or set to false)
-    subtitle = ""
+    subtitle = "Showcase page"
 
     # Site description
-	description = "RainFD的个人博客."
+    description = "Example site for Slick Hugo theme"
 
     # Favicon file (relative to baseURL - place in assets folder)
     favicon = "favicon.png"
@@ -49,18 +46,16 @@ paginatePath = "page"
     # For reference to date and time formatting, see:
     # https://gohugo.io/functions/format/#hugo-date-and-time-templating-reference
     # Make sure to set showMetaDates to true to see any dates
-    # dateFmt = "Mon, 02 Jan 2006"
-    dateFmt = "2006 01/02"
+    dateFmt = "Mon, 02 Jan 2006 15:04:05 MST"
 
     # Customize the text of the 404 page here
-    # errorPageText = "There's nothing to see here, please move along!"
-    errorPageText = "Nothing"
+    errorPageText = "There's nothing to see here, please move along!"
 
     # Define ordering by parameter - anything from the frontmatter is possible
     # Popular options would be "date" (default), "weight", "title", "publishdate"
-    orderPageParam = "date"
+    orderPageParam = "title"
     # Reverse the ordering from above
-    orderPageReverse = true
+    orderPageReverse = false
 
     # Header with title/subtitle can be disabled here.
     # (If you disable this, add some link on the index page inside menu.main,
@@ -89,6 +84,8 @@ paginatePath = "page"
     opengraph = false
     schema = false
     twitter_cards = false
+
+    icp = ""
 
 
 # Define all supported taxonomies (add series to the default)
@@ -160,8 +157,8 @@ paginatePath = "page"
     # Add some footer links to your likings
     [[menu.footer]]
         name = "GitHub"
-        title = "RainFD repository"
-        url = "https://github.com/rainfd"
+        title = "Theme repository"
+        url = "https://github.com/spookey/slick"
         weight = 1
 
     [[menu.footer]]
@@ -169,6 +166,12 @@ paginatePath = "page"
         title = "Theme page on gohugo.io"
         url = "https://themes.gohugo.io/slick"
         weight = 2
+
+    [[menu.footer]]
+        name = "Toor"
+        title = "Some website, using this theme"
+        url = "https://www.toor.su"
+        weight = 3
 
 
 # Enable generation of robots.txt
