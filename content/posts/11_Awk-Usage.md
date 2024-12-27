@@ -6,12 +6,14 @@ tags:
 - Linux
 categories:
 - Tools
-typora-root-url: ../../static/
+typora-root-url: "../../static/"
+cover:
+  image: "/img/11/awk.jpg"
 ---
 
 Awk 使用教程和使用案例
 
-![awk](/img/11/awk.jpg)
+<!-- ![awk](/img/11/awk.jpg) -->
 
 *本文是[Awk command tutorial in linux/unix with examples and use cases](https://www.linuxcommands.site/linux-text-processing-commands/linux-awk-command/awk-syntax/)的部分译文*
 <!--more-->

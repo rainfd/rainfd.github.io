@@ -6,11 +6,13 @@ tags:
 categories:
   - Network
 typora-root-url: ../../static/
+cover:
+  image: "/img/12/coredns.png"
 ---
 
 最近看到一篇文章[CoreDNS生产案：pod出现dns解析大量失败的问题](^1)，发现自己对DNS和K8s的DNS使用机制都不是很了解，这里就来深入一下。
 
-![coredns](/img/12/coredns.png)
+<!-- ![coredns](/img/12/coredns.png) -->
 
 <!--more-->
 

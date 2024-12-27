@@ -1,18 +1,19 @@
 # Set base URL for site - should end with a trailing slash
 baseUrl = "https://example.org/"
 
-theme = "slick"
+# theme = "slick"
+theme = "PaperMod"
 
 # Site title (not shown if commented out or set to false)
 # (If you disable this, add some link on the index page inside menu.main,
 #  otherwise your visitors will get confused and lost...)
-title = "Slick Example"
+title = "RainFD's Blog"
 
 languageCode = "en"
 defaultContentLanguage = "en"
 
 # Will appear below the footer links with a © sign and the current year
-copyright = "Some Author — All rights reserved."
+copyright = "RainFD.com | Powered by Hugo | Based on Theme: Slick"
 
 [markup]
     [markup.goldmark]
@@ -30,11 +31,14 @@ paginate = 10
 paginatePath = "page"
 
 [params]
+    # 备案号
+    icp = "粤ICP备2022020499号"
+
     # Site subtitle (not shown if commented out or set to false)
-    subtitle = "Showcase page"
+    subtitle = ""
 
     # Site description
-    description = "Example site for Slick Hugo theme"
+	description = "RainFD的个人博客."
 
     # Favicon file (relative to baseURL - place in assets folder)
     favicon = "favicon.png"
@@ -46,16 +50,18 @@ paginatePath = "page"
     # For reference to date and time formatting, see:
     # https://gohugo.io/functions/format/#hugo-date-and-time-templating-reference
     # Make sure to set showMetaDates to true to see any dates
-    dateFmt = "Mon, 02 Jan 2006 15:04:05 MST"
+    # dateFmt = "Mon, 02 Jan 2006"
+    dateFmt = "2006 01/02"
 
     # Customize the text of the 404 page here
-    errorPageText = "There's nothing to see here, please move along!"
+    # errorPageText = "There's nothing to see here, please move along!"
+    errorPageText = "Nothing"
 
     # Define ordering by parameter - anything from the frontmatter is possible
     # Popular options would be "date" (default), "weight", "title", "publishdate"
-    orderPageParam = "title"
+    orderPageParam = "date"
     # Reverse the ordering from above
-    orderPageReverse = false
+    orderPageReverse = true
 
     # Header with title/subtitle can be disabled here.
     # (If you disable this, add some link on the index page inside menu.main,
@@ -85,8 +91,6 @@ paginatePath = "page"
     schema = false
     twitter_cards = false
 
-    icp = ""
-
 
 # Define all supported taxonomies (add series to the default)
 [taxonomies]
@@ -104,7 +108,7 @@ paginatePath = "page"
     # limit the length of the rss feed (default: unlimited)
     limit = 0
 
-
+# slick theme menu
 [menu]
 
     # Configure main menu entries (header)
@@ -157,8 +161,8 @@ paginatePath = "page"
     # Add some footer links to your likings
     [[menu.footer]]
         name = "GitHub"
-        title = "Theme repository"
-        url = "https://github.com/spookey/slick"
+        title = "RainFD repository"
+        url = "https://github.com/rainfd"
         weight = 1
 
     [[menu.footer]]
@@ -166,12 +170,6 @@ paginatePath = "page"
         title = "Theme page on gohugo.io"
         url = "https://themes.gohugo.io/slick"
         weight = 2
-
-    [[menu.footer]]
-        name = "Toor"
-        title = "Some website, using this theme"
-        url = "https://www.toor.su"
-        weight = 3
 
 
 # Enable generation of robots.txt
@@ -186,3 +184,8 @@ enableRobotsTXT = true
   filename = "sitemap.xml"
   # Values range from 0.0 to 1.0. Set to -1 to omit inclusion
   priority =  -1
+
+
+[module]
+  [[module.imports]]
+    path = 'github.com/adityatelange/hugo-PaperMod'

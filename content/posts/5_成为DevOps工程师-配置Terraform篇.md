@@ -7,12 +7,14 @@ categories:
  - "DevOps"
 series: 
  - "成为DevOps工程师"
+cover:
+  image: "/img/5/devops_six_parts.png"
 typora-root-url: ../../static/
 ---
 
 在博文[How To Become a DevOps Engineer In Six Months or Less](https://medium.com/@devfire/how-to-become-a-devops-engineer-in-six-months-or-less-366097df7737)中，作者介绍了一条DevOps的学习路线
 
-![devops_six_parts](/img/5/devops_six_parts.png)
+<!-- ![devops_six_parts](/img/5/devops_six_parts.png) -->
 
 本系列文章将依据这条路线，因地制宜，介绍各个环节和这些工具的使用。
 
