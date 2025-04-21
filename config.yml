@@ -170,3 +170,7 @@ outputs:
     - HTML
     - RSS
     - JSON
+
+services:
+  googleAnalytics:
+    id: "G-YZWW8Q0N1P"
