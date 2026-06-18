@@ -58,22 +58,13 @@ export default defineConfig({
   },
   fonts: [
     {
-      name: "Noto Sans SC",
-      cssVariable: "--font-noto-sans-sc",
-      provider: fontProviders.google(),
-      fallbacks: ["sans-serif"],
-      weights: [300, 400, 500, 700],
-      styles: ["normal"],
-      formats: ["woff", "ttf"],
-    },
-    {
       name: "JetBrains Mono",
       cssVariable: "--font-jetbrains-mono",
       provider: fontProviders.google(),
       fallbacks: ["monospace"],
       weights: [400, 500],
       styles: ["normal"],
-      formats: ["woff", "ttf"],
+      formats: ["woff2"],
     },
   ],
   env: {

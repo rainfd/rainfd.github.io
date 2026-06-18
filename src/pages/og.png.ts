@@ -1,26 +1,27 @@
 import type { APIRoute } from "astro";
 import satori from "satori";
 import sharp from "sharp";
-import { fontData, experimental_getFontFileURL } from "astro:assets";
-import { getFontPathByWeight } from "@/utils/getFontPathByWeight";
 import config from "@/config";
 
-export const GET: APIRoute = async context => {
-  const fonts = fontData["--font-noto-sans-sc"];
-  const regularFontPath = getFontPathByWeight(fonts, 400);
-  const boldFontPath = getFontPathByWeight(fonts, 700);
+// Module-level cache to avoid re-downloading 10MB font per OG image
+const fontCache = new Map<number, ArrayBuffer>();
 
-  if (regularFontPath === undefined || boldFontPath === undefined) {
-    throw new Error("Cannot find the font path.");
-  }
+async function fetchFontBuffer(weight: number): Promise<ArrayBuffer> {
+  if (fontCache.has(weight)) return fontCache.get(weight)!;
+  const css = await fetch(
+    `https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@${weight}&display=swap`
+  ).then(res => res.text());
+  const urlMatch = css.match(/url\((https:\/\/[^)]+)\)/);
+  if (!urlMatch) throw new Error(`Cannot find font URL for weight ${weight}`);
+  const buffer = await fetch(urlMatch[1]).then(res => res.arrayBuffer());
+  fontCache.set(weight, buffer);
+  return buffer;
+}
 
+export const GET: APIRoute = async () => {
   const [regularData, boldData] = await Promise.all([
-    fetch(experimental_getFontFileURL(regularFontPath, context.url)).then(res =>
-      res.arrayBuffer()
-    ),
-    fetch(experimental_getFontFileURL(boldFontPath, context.url)).then(res =>
-      res.arrayBuffer()
-    ),
+    fetchFontBuffer(400),
+    fetchFontBuffer(700),
   ]);
 
   const svg = await satori(
