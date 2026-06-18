@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from "astro/types";
 import Socials from "./Socials.astro";
 import { useTranslations } from "@/i18n";
+import config from "@/config";
 
 type Props = {
   noMarginTop?: boolean;
@@ -11,6 +12,7 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
 
 const t = useTranslations(Astro.currentLocale);
 const currentYear = new Date().getFullYear();
+const { icp } = config.site;
 ---
 
 <footer
@@ -25,6 +27,21 @@ const currentYear = new Date().getFullYear();
       <span>{t.footer.copyright} &#169; {currentYear}</span>
       <span class="hidden sm:inline">&nbsp;|&nbsp;</span>
       <span>{t.footer.allRightsReserved}</span>
+      {
+        icp && (
+          <>
+            <span class="hidden sm:inline">&nbsp;|&nbsp;</span>
+            <a
+              href="https://beian.miit.gov.cn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:underline"
+            >
+              {icp}
+            </a>
+          </>
+        )
+      }
     </div>
   </div>
 </footer>

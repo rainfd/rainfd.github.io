@@ -19,6 +19,8 @@ interface SiteConfig {
   dir?: "ltr" | "rtl" | "auto";
   /** Google Search Console verification meta tag value */
   googleVerification?: string;
+  /** ICP beian (备案) number, e.g. "粤ICP备2022020499号" */
+  icp?: string;
 }
 
 interface PostsConfig {
@@ -115,7 +117,7 @@ type ResolvedSiteConfig = Required<
     | "ogImage"
   >
 > &
-  Pick<SiteConfig, "profile" | "googleVerification">;
+  Pick<SiteConfig, "profile" | "googleVerification" | "icp">;
 
 export interface ResolvedAstroPaperConfig {
   site: ResolvedSiteConfig;
