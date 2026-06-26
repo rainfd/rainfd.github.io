@@ -33,6 +33,67 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Restore IndexNow cache
+        id: indexnow-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .indexnow-cache.txt
+          key: indexnow-urls
+          restore-keys: indexnow-urls
+          fail-on-cache-miss: false
+
+      - name: Submit new URLs to IndexNow
+        run: |
+          python3 << 'PYEOF'
+          import re, json, urllib.request, os
+
+          with open("dist/sitemap-0.xml") as f:
+              content = f.read()
+          current_urls = sorted(set(
+              u.replace("rainfd.github.io", "rainfd.fun")
+              for u in re.findall(r'<loc>(https://rainfd\.github\.io[^<]+)</loc>', content)
+          ))
+
+          cache_file = ".indexnow-cache.txt"
+          prev_urls = set()
+          if os.path.exists(cache_file):
+              with open(cache_file) as f:
+                  prev_urls = set(line.strip() for line in f if line.strip())
+
+          new_urls = [u for u in current_urls if u not in prev_urls]
+
+          with open(cache_file, "w") as f:
+              f.write("\n".join(current_urls))
+
+          if new_urls:
+              print(f"Submitting {len(new_urls)} new URL(s) to IndexNow:")
+              for u in new_urls:
+                  print(f"  {u}")
+
+              payload = json.dumps({
+                  "host": "rainfd.fun",
+                  "key": "130c817164984001a05d80a0938d9466",
+                  "keyLocation": "https://rainfd.fun/130c817164984001a05d80a0938d9466.txt",
+                  "urlList": new_urls
+              }).encode("utf-8")
+
+              req = urllib.request.Request(
+                  "https://api.indexnow.org/indexnow",
+                  data=payload,
+                  headers={"Content-Type": "application/json; charset=utf-8"}
+              )
+              resp = urllib.request.urlopen(req)
+              print(f"IndexNow response: {resp.status}")
+          else:
+              print("No new URLs to submit.")
+          PYEOF
+
+      - name: Save IndexNow cache
+        uses: actions/cache/save@v4
+        with:
+          path: .indexnow-cache.txt
+          key: indexnow-urls
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
