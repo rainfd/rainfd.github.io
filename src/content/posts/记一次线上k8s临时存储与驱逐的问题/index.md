@@ -4,7 +4,7 @@ title: "记一次线上K8s临时存储与驱逐的问题"
 slug: 记一次线上k8s临时存储与驱逐的问题
 pubDatetime: 2019-10-31T00:00:00+08:00
 draft: false
-description: "线上容器被驱逐引出的一系列问题。 --- 问题症状"
+description: "记录一次线上 Kubernetes 容器因临时存储耗尽被驱逐的排查过程，分析 Ephemeral Storage 机制、驱逐策略及最终解决方案。"
 tags:
   - Kubernetes
 ---

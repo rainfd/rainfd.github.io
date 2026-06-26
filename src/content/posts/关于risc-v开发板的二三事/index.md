@@ -4,7 +4,7 @@ title: "关于RISC-V开发板的二三事"
 slug: 关于risc-v开发板的二三事
 pubDatetime: 2020-12-10T00:00:00+08:00
 draft: false
-description: "最近再刷MIT的6.S081操作系统课程。今年的课是基于RISC-V架构讲的，运行的系统是跑在qemu模拟器上。随着对RISC-V的了解不断加深，我对这个ISA就越感兴趣，所以想着买一块RISC-V的开发板过来，直接在上面跑课程lab，或者试试移植linux来玩玩。但现实还是说明这个ISA还是太年轻了。 --- ..."
+description: "从 MIT 6.S081 课程出发，调研市面上各款 RISC-V 开发板（SiFive、全志 D1、K210 等），分享选型历程与 RISC-V 生态的现状观察。"
 tags:
   - RISC-V
 ---

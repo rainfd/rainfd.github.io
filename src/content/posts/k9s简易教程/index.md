@@ -1,10 +1,10 @@
 ---
 author: RainFD
-title: "K9s简易教程"
+title: "K9s 终端 Kubernetes 管理工具简易教程"
 slug: k9s简易教程
 pubDatetime: 2022-07-18T00:00:00+08:00
 draft: false
-description: "K9s是一个基于终端的K8s UI管理工具。只需要一个二进制文件，就可以在任意的命令行终端上对K8s进行管理。这个工具的操作逻辑是基于Vim，熟悉Vim的同学几分钟就能上手。 <!--  -- ---"
+description: "K9s 是基于终端的 Kubernetes UI 管理工具，操作逻辑模仿 Vim，几分钟即可上手。本文演示常用操作：资源浏览、日志查看、Shell 进入和端口转发等。"
 tags:
   - Kubernetes
   - K9s

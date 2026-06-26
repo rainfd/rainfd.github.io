@@ -4,7 +4,7 @@ title: "成为DevOps工程师-配置Terraform篇"
 slug: 成为devops工程师-配置terraform篇
 pubDatetime: 2019-04-07T00:00:00+08:00
 draft: false
-description: "在博文How To Become a DevOps Engineer In Six Months or Less中，作者介绍了一条DevOps的学习路线 <!--  -- 本系列文章将依据这条路线，因地制宜，介绍各个环节和这些工具的使用。"
+description: "系统学习 Terraform 基础设施即代码的核心概念、HCL 语法、Provider 配置及 State 管理，通过实战案例掌握 AWS/GCP 资源的自动化管理。"
 tags:
   - Terraform
 ---

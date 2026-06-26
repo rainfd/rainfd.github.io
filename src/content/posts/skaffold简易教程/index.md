@@ -1,6 +1,6 @@
 ---
 author: RainFD
-title: "Skaffold简易教程"
+title: "Skaffold 本地 Kubernetes 开发工具简易教程"
 slug: skaffold简易教程
 pubDatetime: 2022-07-13T07:15:25+08:00
 draft: false

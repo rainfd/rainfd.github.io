@@ -1,10 +1,10 @@
 ---
 author: RainFD
-title: "ROOK安装教程"
+title: "ROOK 云原生存储编排工具安装教程与 Ceph 集群搭建"
 slug: rook安装教程
 pubDatetime: 2020-11-13T00:00:00+08:00
 draft: false
-description: "ROOK —— 一个云原生的开源的存储编排工具，提供了多种存储解决方案。 --- 为什么选择ROOK"
+description: "ROOK 是云原生存储编排工具，可快速在 Kubernetes 上搭建 Ceph 集群。本文记录完整的安装流程、磁盘清空、StorageClass 配置及 Dashboard 访问等实践细节。"
 tags:
   - Kubernetes
   - Rook

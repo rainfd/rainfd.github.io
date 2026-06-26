@@ -4,7 +4,7 @@ title: "Bottle源码阅读笔记（一）：WSGI"
 slug: bottle-source-wsgi
 pubDatetime: 2017-06-05T00:00:00+08:00
 draft: false
-description: "通过阅读 Bottle 源码了解 WSGI 协议以及 Python Web 框架的工作原理。"
+description: "通过阅读 Bottle 源码，深入理解 WSGI 协议的工作原理、请求处理流程以及 Python Web 框架如何通过 WSGI 接口与 Web 服务器进行交互。"
 tags:
   - Python
   - Bottle

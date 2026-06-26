@@ -4,7 +4,7 @@ title: "成为DevOps工程师-版本控制Git篇"
 slug: 成为devops工程师-版本控制git篇
 pubDatetime: 2019-05-18T00:00:00+08:00
 draft: false
-description: "网上关于Git的文章实在是太多了，所以我就不浪费时间介绍一些基本概念和操作。 在这里我推荐一些相关的资源，以及介绍一些不常见但实用的技巧。 ---"
+description: "不介绍 Git 基础概念，直接分享不常见但实用的 Git 技巧：rebase 工作流、cherry-pick、reflog 救急、submodule 管理以及推荐学习资源。"
 tags:
   - Git
 ---

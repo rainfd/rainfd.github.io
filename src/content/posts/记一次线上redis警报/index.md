@@ -4,7 +4,7 @@ title: "记一次线上Redis警报"
 slug: 记一次线上redis警报
 pubDatetime: 2019-12-16T00:00:00+08:00
 draft: false
-description: "这周周五收到了两个不同系统的Redis集群警报，无独有偶，都是提示连接数超过80%。这个问题在公司其他系统挺常见的，在此记录一下。 --- 问题排查"
+description: "记录一次线上 Redis 集群连接数超过 80% 警报的排查与解决过程，分析连接数增长原因、排查步骤以及如何优化 Redis 客户端连接池配置。"
 tags:
   - Redis
 ---

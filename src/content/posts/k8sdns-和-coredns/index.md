@@ -1,10 +1,10 @@
 ---
 author: RainFD
-title: "K8sDNS 和 CoreDNS"
+title: "Kubernetes DNS 原理与 CoreDNS 深入解析"
 slug: k8sdns-和-coredns
 pubDatetime: 2020-04-03T00:00:00+08:00
 draft: false
-description: "最近看到一篇文章CoreDNS生产案：pod出现dns解析大量失败的问题，发现自己对DNS和K8s的DNS使用机制都不是很了解，这里就来深入一下。 <!--  -- ---"
+description: "从 DNS 基本原理出发，深入解析 Kubernetes 集群中 DNS 的工作机制、CoreDNS 架构与配置，以及生产环境中常见的 DNS 解析故障排查思路。"
 tags:
   - Kubernetes
 ---

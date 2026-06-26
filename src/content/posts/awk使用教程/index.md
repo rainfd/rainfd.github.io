@@ -1,10 +1,10 @@
 ---
 author: RainFD
-title: "Awk使用教程"
+title: "Awk 文本处理工具使用教程与实战案例"
 slug: awk使用教程
 pubDatetime: 2020-02-03T00:00:00+08:00
 draft: false
-description: "Awk 使用教程和使用案例 <!--  -- 本文是Awk command tutorial in linux/unix with examples and use cases的部分译文"
+description: "从基础语法到实战案例，全面讲解 Linux Awk 文本处理工具的用法，包括变量、数组、自定义函数和 group by 统计等进阶技巧。"
 tags:
   - Awk
   - Linux

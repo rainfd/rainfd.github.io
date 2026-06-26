@@ -4,7 +4,7 @@ title: "成为DevOps工程师-配置Ansible篇"
 slug: 成为devops工程师-配置ansible篇
 pubDatetime: 2019-04-20T00:00:00+08:00
 draft: false
-description: "什么是Ansible？Ansible能干什么？ --- Ansible是什么"
+description: "从 Ansible 基本概念到核心模块实战，系统学习如何使用 Ansible 实现自动化配置管理、应用部署和任务编排，成为 DevOps 工程师的必备技能。"
 tags:
   - Ansible
 ---

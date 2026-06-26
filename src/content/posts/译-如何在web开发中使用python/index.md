@@ -4,7 +4,7 @@ title: "[译]如何在Web开发中使用Python"
 slug: 译-如何在web开发中使用python
 pubDatetime: 2017-02-23T00:00:00+08:00
 draft: false
-description: "原文：HOWTO Use Python in the Web 这篇文档展示了Python如何融入到web中。它介绍了几种Python结合web服务器的方法，以及开发网站的一些常规做法。 “Web 2.0”是指由用户主导网站内容的创作。自从这个概念兴起以来，网络编程就成为了一个热门话题。一直以来，用Python创建..."
+description: "这篇文档展示了 Python 如何融入到 Web 开发中，介绍几种 Python 结合 Web 服务器的方法以及开发网站的一般做法。"
 tags:
   - Python
 ---

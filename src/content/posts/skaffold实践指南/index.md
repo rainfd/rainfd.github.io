@@ -4,7 +4,7 @@ title: "Skaffold实践指南"
 slug: skaffold实践指南
 pubDatetime: 2022-07-13T00:00:00+08:00
 draft: false
-description: "Build 官方支持Build的方式有: - Docker, 最常见的"
+description: "深入 Skaffold 的 Build、Test 和 Deploy 三阶段配置，介绍 Docker、Jib、ko 等多种构建方式及 Helm、Kubectl 等部署器的实践用法。"
 tags:
   - Skaffold
   - ko

@@ -4,7 +4,7 @@ title: "使用Travis CI构建部署GithubPage"
 slug: 使用travis-ci构建部署githubpage
 pubDatetime: 2019-10-20T00:00:00+08:00
 draft: false
-description: "GitHub Page Github Page分两种，一种是用户自己的个人主页，另一种是项目的主页 - 个人主页：域名为username.github.io，username与Github用户名一致，只能使用仓库中的master分支作为构建GithubPage的页面。"
+description: "介绍 GitHub Pages 的两种类型及工作原理，并详细演示如何使用 Travis CI 实现 Hexo 博客的自动构建与部署，让每次提交都能自动更新站点。"
 tags:
   - Git
 ---

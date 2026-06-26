@@ -1,10 +1,10 @@
 ---
 author: RainFD
-title: "MCP是什么？"
+title: "MCP 模型上下文协议详解：LLM Agent 开发新范式"
 slug: mcp是什么
 pubDatetime: 2025-04-18T00:00:00+08:00
 draft: false
-description: "最近在LLM Agent开发里面有个新的概念很火，叫MCP，是Model Context Protocol的缩写，意思是模型上下文协议。看了一下官方的解释，就是一个类似USB-C的协议，能让各种数据源、工具按照MCP的标准来连接LLM应用。就是想着统一了规范，LLM应用接入新功能就容易很多了。 MCP架构 MCP..."
+description: "深入解析 Model Context Protocol（MCP）的架构设计、协议内容与生态现状，探讨它能否像 USB-C 统一外设一样统一 LLM 工具和数据源的接入标准。"
 tags:
   - MCP
   - LLM

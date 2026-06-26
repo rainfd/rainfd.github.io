@@ -4,7 +4,7 @@ title: "Python环境&工程搭建"
 slug: python环境-工程搭建
 pubDatetime: 2020-06-15T00:00:00+08:00
 draft: false
-description: "之前一直在线上服务器裸敲Python，很久没有在自己的mac上写了。最近有任务要用Python来实现，借此好好整理关于Python环境设置和工程搭建遇到的问题。 --- 示例工程地址: <https://github.com/rainfd/python-example-project"
+description: "从 pyenv 版本管理到 Poetry 依赖管理，再到 Makefile 自动化脚本，一文讲清楚 Python 项目在 macOS/Linux 上的完整工程搭建流程，附带示例工程地址。"
 tags:
   - Python
 ---

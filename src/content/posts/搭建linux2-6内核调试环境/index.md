@@ -4,7 +4,7 @@ title: "搭建Linux2.6内核调试环境"
 slug: 搭建linux2-6内核调试环境
 pubDatetime: 2021-04-22T00:00:00+08:00
 draft: false
-description: "最近在读《Linux内核设计与实现》，在书的开始就要先搭建一个Linux2.6的环境。 为了把环境搭好，折腾了好几天。所以来分享一下搭建流程以及可能遇到的坑。 ---"
+description: "使用 QEMU + BusyBox 从零搭建 Linux 2.6 内核调试环境，记录内核编译、根文件系统制作、GDB 远程调试等完整流程以及踩过的坑。"
 tags:
   - Linux
 ---
