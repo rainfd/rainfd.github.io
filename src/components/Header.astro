@@ -41,8 +41,8 @@ let switchUrl: string;
 if (locale === "zh-CN") {
   // Chinese → English
   if (isArticle) {
-    // Article page: just prefix slug with 'en-', no /en/ URL prefix
-    switchUrl = strippedPath.replace(/\/posts\/(?!en-)([^/]+)/, "/posts/en-$1");
+    // Article page: add /en/ prefix and prefix slug with 'en-'
+    switchUrl = `/en${strippedPath.replace(/\/posts\/(?!en-)([^/]+)/, "/posts/en-$1")}`;
   } else {
     // Listing page: add /en/ prefix
     switchUrl = `/en${strippedPath === "/" ? "" : strippedPath}`.replace(/\/$/, "") || "/en";
