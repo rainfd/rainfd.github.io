@@ -36,15 +36,26 @@ const isActive = (path: string) => {
 
 // Language switcher
 const strippedPath = stripLocale(relativePath, locale);
+const isArticle = /^\/posts\//.test(strippedPath);
 let switchUrl: string;
 if (locale === "zh-CN") {
-  // Chinese → English: add /en/ prefix. For article pages, also prefix slug with 'en-'
-  const enPath = strippedPath.replace(/\/posts\/(?!en-)([^/]+)/, "/posts/en-$1");
-  switchUrl = `/en${enPath === "/" ? "" : enPath}`.replace(/\/$/, "") || "/en";
+  // Chinese → English
+  if (isArticle) {
+    // Article page: just prefix slug with 'en-', no /en/ URL prefix
+    switchUrl = strippedPath.replace(/\/posts\/(?!en-)([^/]+)/, "/posts/en-$1");
+  } else {
+    // Listing page: add /en/ prefix
+    switchUrl = `/en${strippedPath === "/" ? "" : strippedPath}`.replace(/\/$/, "") || "/en";
+  }
 } else {
-  // English → Chinese: remove /en/ prefix. For article pages, strip 'en-' from slug
-  const zhPath = strippedPath.replace(/\/posts\/en-([^/]+)/, "/posts/$1");
-  switchUrl = zhPath || "/";
+  // English → Chinese
+  if (isArticle) {
+    // Article page: strip 'en-' from slug, remove /en/ prefix
+    switchUrl = strippedPath.replace(/\/posts\/en-([^/]+)/, "/posts/$1");
+  } else {
+    // Listing page: just remove /en/ prefix
+    switchUrl = strippedPath || "/";
+  }
 }
 const switchLabel = locale === "zh-CN" ? "EN" : "中文";
 ---
