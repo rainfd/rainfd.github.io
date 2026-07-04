@@ -1,9 +1,10 @@
 ---
+import { getLocaleFromUrl } from "@/utils/locale";
 import IconArrowLeft from "@/assets/icons/IconArrowLeft.svg";
 import IconArrowNarrowUp from "@/assets/icons/IconArrowNarrowUp.svg";
 import { useTranslations } from "@/i18n";
 
-const t = useTranslations(Astro.currentLocale);
+const t = useTranslations(getLocaleFromUrl(Astro.url));
 ---
 
 <div

@@ -1,5 +1,6 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
+import { getRelativeLocaleUrl } from "@/utils/i18n-shim";
+import { getLocaleFromUrl } from "@/utils/locale";
 import IconUnderline from "@/assets/icons/IconUnderline.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import IconArchive from "@/assets/icons/IconArchive.svg";
@@ -14,7 +15,7 @@ import config from "@/config";
 
 const { site, features } = config;
 
-const locale = Astro.currentLocale ?? config.site.lang;
+const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
 // Strip the base prefix so isActive comparisons work regardless of deploy subdirectory.
@@ -32,6 +33,20 @@ const isActive = (path: string) => {
   const pathArray = path.split("/").filter(p => p.trim());
   return currentPath === path || currentPathArray[0] === pathArray[0];
 };
+
+// Language switcher
+const strippedPath = stripLocale(relativePath, locale);
+let switchUrl: string;
+if (locale === "zh-CN") {
+  // Chinese → English: add /en/ prefix. For article pages, also prefix slug with 'en-'
+  const enPath = strippedPath.replace(/\/posts\/(?!en-)([^/]+)/, "/posts/en-$1");
+  switchUrl = `/en${enPath === "/" ? "" : enPath}`.replace(/\/$/, "") || "/en";
+} else {
+  // English → Chinese: remove /en/ prefix. For article pages, strip 'en-' from slug
+  const zhPath = strippedPath.replace(/\/posts\/en-([^/]+)/, "/posts/$1");
+  switchUrl = zhPath || "/";
+}
+const switchLabel = locale === "zh-CN" ? "EN" : "中文";
 ---
 
 <a
@@ -122,6 +137,15 @@ const isActive = (path: string) => {
             </li>
           )
         }
+        <li class="col-span-1 flex items-center justify-center">
+          <a
+            href={switchUrl}
+            class="text-accent/85 hover:text-accent px-2 py-1 text-sm font-medium"
+            title={switchLabel}
+          >
+            {switchLabel}
+          </a>
+        </li>
         {
           features.search !== false && (
             <li class="col-span-1 flex items-center justify-center">

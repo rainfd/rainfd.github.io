@@ -1,4 +1,5 @@
 ---
+import { getLocaleFromUrl } from "@/utils/locale";
 import type { CollectionEntry } from "astro:content";
 import { getPostUrl } from "@/utils/getPostPaths";
 import { toTransitionName } from "@/utils/toTransitionName";
@@ -15,7 +16,7 @@ const { title, description, ...props } = data;
 
 <li class="my-6">
   <a
-    href={getPostUrl(id, filePath, Astro.currentLocale)}
+    href={getPostUrl(id, filePath, getLocaleFromUrl(Astro.url), data.slug)}
     class:list={[
       "text-accent inline-block text-lg font-medium",
       "decoration-dashed underline-offset-4 hover:underline",

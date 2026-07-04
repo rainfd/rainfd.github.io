@@ -1,7 +1,7 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
+import { getLocaleFromUrl } from "@/utils/locale";
+import { getRelativeLocaleUrl } from "@/utils/i18n-shim";
 import IconHash from "@/assets/icons/IconHash.svg";
-import config from "@/config";
 
 type Props = {
   tag: string;
@@ -11,7 +11,7 @@ type Props = {
 
 const { tag, tagName, size = "lg" } = Astro.props;
 
-const locale = Astro.currentLocale ?? config.site.lang;
+const locale = getLocaleFromUrl(Astro.url);
 ---
 
 <li>

@@ -27,13 +27,6 @@ export default defineConfig({
         config.features?.showArchives !== false || !page.endsWith("/archives/"),
     }),
   ],
-  i18n: {
-    locales: ["en", "zh-CN"],
-    defaultLocale: "zh-CN",
-    routing: {
-      prefixDefaultLocale: false,
-    },
-  },
   markdown: {
     processor: unified({
       remarkPlugins: [

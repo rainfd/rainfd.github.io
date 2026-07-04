@@ -1,4 +1,5 @@
 ---
+import { getLocaleFromUrl } from "@/utils/locale";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -25,7 +26,7 @@ const {
   timezone: postTimezone,
 } = Astro.props;
 
-const t = useTranslations(Astro.currentLocale);
+const t = useTranslations(getLocaleFromUrl(Astro.url));
 
 const isModified = modDatetime && modDatetime > pubDatetime;
 

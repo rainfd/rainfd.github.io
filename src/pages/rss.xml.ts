@@ -5,7 +5,7 @@ import { getPostUrl } from "@/utils/getPostPaths";
 import config from "@/config";
 
 export async function GET() {
-  const posts = await getCollection("posts");
+  const posts = await getCollection("posts", ({ data }) => !data.draft);
   const sortedPosts = getSortedPosts(posts);
 
   return rss({
@@ -13,7 +13,7 @@ export async function GET() {
     description: config.site.description,
     site: config.site.url,
     items: sortedPosts.map(({ data, id, filePath }) => ({
-      link: getPostUrl(id, filePath, config.site.lang),
+      link: getPostUrl(id, filePath, config.site.lang, data.slug),
       title: data.title,
       description: data.description,
       pubDate: new Date(data.modDatetime ?? data.pubDatetime),

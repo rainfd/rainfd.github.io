@@ -1,7 +1,8 @@
 ---
+import { getLocaleFromUrl } from "@/utils/locale";
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
-import { getRelativeLocaleUrl } from "astro:i18n";
+import { getRelativeLocaleUrl } from "@/utils/i18n-shim";
 import { resolveDefaultOgImagePath } from "@/utils/resolveDefaultOgImagePath";
 import { getAssetPath } from "@/utils/withBase";
 import config from "@/config";
@@ -16,16 +17,21 @@ type Props = {
 
 const { site } = config;
 
+const currentLocale = getLocaleFromUrl(Astro.url);
+const siteDescription = currentLocale === "en"
+  ? "RainFD's personal blog — writing about tech and tools."
+  : site.description;
+
 const {
   title = site.title,
-  description = site.description,
+  description = Astro.props.description ?? siteDescription,
   ogImage = resolveDefaultOgImagePath(config),
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
 const rssHref = getRelativeLocaleUrl(
-  Astro.currentLocale ?? config.site.lang,
+  currentLocale,
   "rss.xml"
 );
 ---
@@ -33,7 +39,7 @@ const rssHref = getRelativeLocaleUrl(
 <!doctype html>
 <html
   dir={site.dir ?? "ltr"}
-  lang={Astro.currentLocale ?? site.lang}
+  lang={getLocaleFromUrl(Astro.url)}
   class="overflow-y-scroll scroll-smooth"
 >
   <head>

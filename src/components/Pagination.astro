@@ -1,4 +1,5 @@
 ---
+import { getLocaleFromUrl } from "@/utils/locale";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 import IconArrowLeft from "@/assets/icons/IconArrowLeft.svg";
@@ -12,7 +13,7 @@ type Props = {
 
 const { page } = Astro.props;
 
-const t = useTranslations(Astro.currentLocale);
+const t = useTranslations(getLocaleFromUrl(Astro.url));
 ---
 
 {

@@ -1,10 +1,10 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
+import { getLocaleFromUrl } from "@/utils/locale";
+import { getRelativeLocaleUrl } from "@/utils/i18n-shim";
 import { stripBase, stripLocale } from "@/utils/withBase";
 import { useTranslations } from "@/i18n";
-import config from "@/config";
 
-const locale = Astro.currentLocale ?? config.site.lang;
+const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
 // Strip base prefix and trailing slash, then locale prefix so segments
